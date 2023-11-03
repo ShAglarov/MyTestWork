@@ -19,7 +19,7 @@ final class NewsCoordinator: Coordinator {
     func start(user: User?) {
         let viewModel = NewsViewModel()
         let newsVC = NewsViewController(viewModel: viewModel)
-        newsVC.title = user?.name ?? "nil"
+        newsVC.title = user?.name ?? ""
         navigationController.pushViewController(newsVC, animated: true)
     }
 }

@@ -36,6 +36,8 @@ class NewsCollectionViewCell: UICollectionViewCell {
         addSubview(articleTitleLbl)
         addSubview(articleAuthorLbl)
         
+        articleTitleLbl.numberOfLines = 0
+        
         articleTitleLbl.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
             make.left.equalToSuperview().offset(10)

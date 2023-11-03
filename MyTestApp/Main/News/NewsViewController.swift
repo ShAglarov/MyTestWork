@@ -114,3 +114,11 @@ extension NewsViewController: UITextFieldDelegate {
         return true
     }
 }
+// MARK: - UICollectionViewDelegateFlowLayout
+extension NewsViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.width - (collectionView.contentInset.left + collectionView.contentInset.right)
+        return CGSize(width: width, height: 100)
+    }
+}
