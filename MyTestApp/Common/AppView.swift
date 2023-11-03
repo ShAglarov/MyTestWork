@@ -29,7 +29,7 @@ final class AppView {
     // Функция для создания UITextField с заданным текстом-заполнителем.
     func textField(placeholder: String,
                    borderStyle: UITextField.BorderStyle = .roundedRect,
-                   isSecureTextEntry: Bool = true ) -> UITextField 
+                   isSecureTextEntry: Bool = false ) -> UITextField 
     {
         let textField = UITextField()
         textField.placeholder = placeholder // устанавливаем текст-заполнитель
