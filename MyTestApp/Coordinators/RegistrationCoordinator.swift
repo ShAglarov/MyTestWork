@@ -1,14 +1,13 @@
 //
-//  SwaggerLoginCoordinator.swift
+//  RegistrationCoordinator.swift
 //  MyTestApp
 //
-//  Created by Shamil Aglarov on 07.11.2023.
+//  Created by Shamil Aglarov on 08.11.2023.
 //
-
 import UIKit
 import Combine
 
-final class SwaggerLoginCoordinator: Coordinator {
+final class RegistrationCoordinator: Coordinator {
     
     var userProfile: UserProfile?
     
@@ -21,9 +20,9 @@ final class SwaggerLoginCoordinator: Coordinator {
     }
     
     func start<USER: Codable>(user: USER? = nil) {
-        let viewModel = LoginSwaggerViewModel()
+        let viewModel = RegistrationViewModel()
         
-        let vc = LoginSwaggerViewController(viewModel: viewModel)
+        let vc = RegistrationViewController(viewModel: viewModel)
         vc.coordinator = self
         navigationController.pushViewController(vc, animated: true)
         
@@ -41,12 +40,6 @@ final class SwaggerLoginCoordinator: Coordinator {
         // Здесь мы передаем полученный userProfile как параметр
         homeCoordinator.start(user: userProfile)
         resetState()
-    }
-    
-    func navigateToRegistration() {
-        let registrationCoordinator = RegistrationCoordinator(navigationController: navigationController)
-        childCoordinators.append(registrationCoordinator)
-        registrationCoordinator.start(user: nil as User?)
     }
     
     // Метод для сброса состояния координатора

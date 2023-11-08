@@ -1,19 +1,19 @@
 //
-//  LoginSwaggerViewController.swift
+//  RegistrationViewController.swift
 //  MyTestApp
 //
-//  Created by Shamil Aglarov on 07.11.2023.
+//  Created by Shamil Aglarov on 08.11.2023.
 //
 
 import UIKit
 import SnapKit
 import Combine
 
-final class LoginSwaggerViewController: UIViewController {
+final class RegistrationViewController: UIViewController {
 
-    private var viewModel = LoginSwaggerViewModel()
+    private var viewModel = RegistrationViewModel()
     
-    init(viewModel: LoginSwaggerViewModel) {
+    init(viewModel: RegistrationViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -22,7 +22,7 @@ final class LoginSwaggerViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    weak var coordinator: SwaggerLoginCoordinator?
+    weak var coordinator: RegistrationCoordinator?
     private let provider = NetworkSwagger()
     
     private var cancellables: Set<AnyCancellable> = []
@@ -33,27 +33,10 @@ final class LoginSwaggerViewController: UIViewController {
         appView.textField(placeholder: "Номер телефона")
     }()
     
-    lazy var passwordTextField: UITextField = {
-        appView.textField(placeholder: "Пароль", isSecureTextEntry: true)
-    }()
-    
-    private lazy var loginBtn: UIButton = {
+    private lazy var loginButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Войти", for: .normal)
+        button.setTitle("Login", for: .normal)
         button.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
-        button.backgroundColor = .systemBlue
-        button.tintColor = .white
-        button.setTitleShadowColor(.black, for: .normal)
-        return button
-    }()
-    
-    private lazy var registrationBtn: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Пройти регистрацию", for: .normal)
-        button.addTarget(self, action: #selector(registrationTapped), for: .touchUpInside)
-        button.backgroundColor = .systemBlue
-        button.tintColor = .white
-        button.setTitleShadowColor(.black, for: .normal)
         return button
     }()
     
@@ -81,32 +64,12 @@ final class LoginSwaggerViewController: UIViewController {
     }
     private func setupUI() {
         view.addSubview(usernameTextField)
-        view.addSubview(passwordTextField)
-        view.addSubview(loginBtn)
-        view.addSubview(registrationBtn)
+        view.addSubview(loginButton)
         
         usernameTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
             make.left.equalTo(view).offset(20)
             make.right.equalTo(view).offset(-20)
-            make.height.equalTo(40)
-        }
-        
-        passwordTextField.snp.makeConstraints { make in
-            make.top.equalTo(usernameTextField.snp.bottom).offset(20)
-            make.left.right.equalTo(usernameTextField)
-            make.height.equalTo(40)
-        }
-        
-        loginBtn.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(40)
-            make.leading.trailing.equalToSuperview().inset(40)
-            make.height.equalTo(40)
-        }
-        
-        registrationBtn.snp.makeConstraints { make in
-            make.top.equalTo(loginBtn.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(40)
             make.height.equalTo(40)
         }
         
@@ -150,15 +113,10 @@ final class LoginSwaggerViewController: UIViewController {
     
     @objc private func loginTapped() {
         viewModel.userName = usernameTextField.text ?? ""
-        viewModel.password = passwordTextField.text ?? ""
         // Запускаем асинхронную задачу для входа в систему
         Task {
             await viewModel.performLogin()
         }
-    }
-    
-    @objc private func registrationTapped() {
-        coordinator?.navigateToRegistration()
     }
     
     private func showAlert(with title: String, message: String, completion: (() -> Void)? = nil) {
