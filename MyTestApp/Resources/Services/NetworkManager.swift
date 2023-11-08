@@ -7,26 +7,9 @@
 
 import Foundation
 
-class NetworkManager {
-    
-    enum NetworkError: Error {
-        case notFound
-        case dataReadingError
-        case invalidURL
-        case invalidResponse
-        case otherError(String)
-    }
+final class NetworkManager {
     
     //https://newsapi.org/v2/everything?q=tesla&from=2023-11-01&softBy=publishedAt&apiKey=2eb9eae4ed484f9b8d6b87fa8184f987
-    //схема// https:
-    //хост/ newsapi.org
-    //путь/ v2/everything
-    
-    //Параметры
-    
-    // значения параметров ["q":"tesla"]
-    // ключ ["2023-11-01":"90d71b4d09934e91b45c675b8fb82a09"]
-    //&apiKey=90d71b4d09934e91b45c675b8fb82a09
     
     func getNews(value: String, limit: String, completion: @escaping (Result<[OneNews], Error>) -> Void) {
         // 1 - url
@@ -77,10 +60,5 @@ class NetworkManager {
             completion(.success(result.articles))
             
         }).resume()
-        
-        // получить ответ (json)
-        // распарсить json
-        
-        
     }
 }

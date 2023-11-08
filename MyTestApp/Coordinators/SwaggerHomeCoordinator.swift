@@ -1,13 +1,13 @@
 //
-//  HomeCoordinator.swift
+//  SwaggerHomeCoordinator.swift
 //  MyTestApp
 //
-//  Created by Shamil Aglarov on 28.10.2023.
+//  Created by Shamil Aglarov on 08.11.2023.
 //
 
 import UIKit
 
-final class HomeCoordinator: Coordinator {
+final class SwaggerHomeCoordinator: Coordinator {
     
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
@@ -17,10 +17,10 @@ final class HomeCoordinator: Coordinator {
     }
 
     func start<USER: Codable>(user: USER? = nil) {
-        let viewModel = HomeViewModel()
-        let homeVC = HomeViewController(viewModel: viewModel)
-        if let user = user as? User {
-            homeVC.title = user.name
+        let viewModel = HomeSwaggerViewModel()
+        let homeVC = HomeSwaggerViewController(viewModel: viewModel)
+        if let user = user as? UserProfile {
+            homeVC.title = "Добро пожаловать \(user.first_name)"
         } else {
             homeVC.title = nil
         }

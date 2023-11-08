@@ -1,20 +1,19 @@
 //
-//  ViewController.swift
+//  LoginSwaggerViewController.swift
 //  MyTestApp
 //
-//  Created by Shamil Aglarov on 28.10.2023.
+//  Created by Shamil Aglarov on 07.11.2023.
 //
 
 import UIKit
 import SnapKit
-import Moya
 import Combine
 
-final class LoginViewController: UIViewController {
+final class LoginSwaggerViewController: UIViewController {
 
-    private var viewModel = LoginViewModel()
+    private var viewModel = LoginSwaggerViewModel()
     
-    init(viewModel: LoginViewModel) {
+    init(viewModel: LoginSwaggerViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -23,19 +22,19 @@ final class LoginViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    weak var coordinator: LoginCoordinator?
-    private let provider = MoyaProvider<JSONPlaceholderAPI>()
+    weak var coordinator: SwaggerLoginCoordinator?
+    private let provider = NetworkSwagger()
     
     private var cancellables: Set<AnyCancellable> = []
     
     let appView = AppView()
 
     lazy var usernameTextField: UITextField = {
-        appView.textField(placeholder: "Логин",isSecureTextEntry: false)
+        appView.textField(placeholder: "Логин")
     }()
     
     lazy var passwordTextField: UITextField = {
-        appView.textField(placeholder: "Пароль")
+        appView.textField(placeholder: "Пароль", isSecureTextEntry: true)
     }()
     
     private lazy var loginButton: UIButton = {
@@ -65,6 +64,7 @@ final class LoginViewController: UIViewController {
         
         // Настраиваем привязку к ViewModel
         bindViewModel()
+        
     }
     private func setupUI() {
         view.addSubview(usernameTextField)
@@ -90,34 +90,52 @@ final class LoginViewController: UIViewController {
             make.height.equalTo(50)
             make.width.equalTo(200)
         }
+        
+        usernameTextField.text = "+7"
     }
     
+    
     private func bindViewModel() {
-        viewModel.$isLoading.sink { isLoading in
-            if isLoading {
-                self.showLoading()
-            } else {
-                self.hideLoading()
+        viewModel.$isLoading
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isLoading in
+                if isLoading {
+                    self?.showLoading()
+                } else {
+                    self?.hideLoading()
+                }
             }
-        }.store(in: &cancellables)
+            .store(in: &cancellables)
 
-        viewModel.$loginError.sink { [weak self] error in
-            if let error = error {
-                self?.showAlert(with: "Error", message: error)
+        viewModel.$loginError
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
+                if let error = error {
+                    self?.showAlert(with: "Error", message: error)
+                    print(error)
+                }
             }
-        }.store(in: &cancellables)
+            .store(in: &cancellables)
 
-        viewModel.$isLoggedIn.sink { [weak self] isLoggedIn in
-            if isLoggedIn {
-                print(self?.viewModel.userName ?? "")
+        viewModel.$isLoggedIn
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isLoggedIn in
+                if isLoggedIn {
+                    if let user = self?.viewModel.loggedInUser {
+                        print(user)
+                    }
+                }
             }
-        }.store(in: &cancellables)
+            .store(in: &cancellables)
     }
     
     @objc private func loginTapped() {
         viewModel.userName = usernameTextField.text ?? ""
         viewModel.password = passwordTextField.text ?? ""
-        viewModel.login()
+        // Запускаем асинхронную задачу для входа в систему
+        Task {
+            await viewModel.performLogin()
+        }
     }
     
     private func showAlert(with title: String, message: String, completion: (() -> Void)? = nil) {
@@ -128,4 +146,3 @@ final class LoginViewController: UIViewController {
         present(alert, animated: true)
     }
 }
-
