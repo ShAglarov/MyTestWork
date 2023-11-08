@@ -23,7 +23,7 @@ final class LoginSwaggerViewModel {
         isLoading = true
         do {
             // Здесь должен быть токен, который вы получили после аутентификации
-            let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NDA2MTAzLCJpYXQiOjE2OTkzOTczNzIsImp0aSI6IjFiYjZlN2FmYjNkNTQwZjhhOGExMjFjZDQxZjMzNzI4IiwidXNlcl9pZCI6IjEyYjkwZTU3LTEyZTgtNGRjYy05ODNhLTVkMDNhOWI3YzlkNiJ9.UK_FmAHbX5iOWp8WSGZQTTPxrlJy6jKy1YP7BN29vLg"
+            let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NDMyMjY4LCJpYXQiOjE2OTk0MDI1MDMsImp0aSI6ImQ0ZjA5Y2I0ODRiNjQzYmJhYTdkZDE3ZTIxYWZlNGFjIiwidXNlcl9pZCI6IjEyYjkwZTU3LTEyZTgtNGRjYy05ODNhLTVkMDNhOWI3YzlkNiJ9._SOTj1e8OUEl1qstWINUAGFheHuXqMM0qhjrUjVrTMU"
             let profile = try await provider.getUserProfile(token: token)
             DispatchQueue.main.async { [weak self] in
                 self?.loggedInUser = profile
