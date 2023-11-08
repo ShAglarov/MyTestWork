@@ -75,7 +75,6 @@ final class HomeSwaggerViewController: UIViewController {
             make.height.equalTo(50)
             make.width.equalTo(200)
         }
-    
     }
 
     private func showAlert(with title: String, message: String, completion: (() -> Void)? = nil) {

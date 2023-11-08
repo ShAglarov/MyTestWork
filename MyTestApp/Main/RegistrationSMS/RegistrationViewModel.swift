@@ -1,13 +1,12 @@
 //
-//  LoginSwaggerViewModel.swift
+//  RegistrationViewModel.swift
 //  MyTestApp
 //
-//  Created by Shamil Aglarov on 06.11.2023.
+//  Created by Shamil Aglarov on 08.11.2023.
 //
-
 import Foundation
 
-final class LoginSwaggerViewModel {
+final class RegistrationViewModel {
     
     @Published var userName = String()
     @Published var password = String()
