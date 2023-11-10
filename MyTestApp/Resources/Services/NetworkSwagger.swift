@@ -63,10 +63,6 @@ final class NetworkSwagger {
         }
     }
     
-    func getUserProfile(token: String) async throws -> UserProfile {
-        return try await postRequest(responseModel: UserProfile.self, token: token)
-    }
-    
     private func postRequestGetToken<T: Codable>(requestBody: [String: Any], responseModel: T.Type) async throws -> T {
         guard let url = createURL(from: getTokenURL) else {
             throw HError.invalidURL
@@ -145,6 +141,45 @@ final class NetworkSwagger {
         switch httpResponse.statusCode {
         case 200...299:
             return try decoder.decode(responseModel, from: data)
+        default:
+            let errorData = String(data: data, encoding: .utf8) ?? "No error information"
+            throw HError.serverError(code: httpResponse.statusCode, message: errorData)
+        }
+    }
+    
+    func getUserProfile(token: String) async throws -> UserProfile {
+        return try await postRequest(responseModel: UserProfile.self, token: token)
+    }
+    func postUserProfile(userProfile: UserProfile, token: String) async throws -> UserProfile {
+        return try await postRequest2(userProfile: userProfile, responseModel: UserProfile.self, token: token)
+    }
+    
+    private func postRequest2<T: Codable>(userProfile: UserProfile, responseModel: T.Type, token: String) async throws -> T {
+        guard let url = createURL(from: getProfileURL) else {
+            throw HError.invalidURL
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        // Кодирование данных пользователя в JSON
+        do {
+            let jsonData = try JSONEncoder().encode(userProfile)
+            request.httpBody = jsonData
+        } catch {
+            throw HError.invalidURL
+        }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw HError.invalidResponse
+        }
+        
+        switch httpResponse.statusCode {
+        case 200...299:
+            return try JSONDecoder().decode(responseModel, from: data)
         default:
             let errorData = String(data: data, encoding: .utf8) ?? "No error information"
             throw HError.serverError(code: httpResponse.statusCode, message: errorData)

@@ -16,7 +16,7 @@ struct UserProfile: Codable {
     let gender_label: String?
     let country: String
     let country_label: String
-    let city_id: Int? 
+    let city_id: Int?
     let city: String?
     let phone: String
     let avatar: String?
