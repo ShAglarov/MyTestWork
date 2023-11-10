@@ -6,15 +6,32 @@
 //
 
 import Foundation
+import SwiftUI
+
+// Модель ответа аутентификации
+struct AuthResponse: Codable {
+    let refresh: String
+    let access: String
+}
 
 final class NetworkSwagger {
     
-    private let getCodeUrl = "https://dev-hospital.doct24.com/api/v1/auth/login/get/code/"
-    private let baseHospitalURL = "https://dev-hospital.doct24.com/api/v1/auth/profile/"
+    private let getCodeURL = "https://dev-hospital.doct24.com/api/v1/auth/login/get/code/"
+    private let getTokenURL = "https://dev-hospital.doct24.com/api/v1/auth/login/get/token/"
+    private let getProfileURL = "https://dev-hospital.doct24.com/api/v1/auth/profile/"
     private let decoder = JSONDecoder()
     
+    // Функция для вызова API аутентификации
+    func authenticateUser(phoneNumber: String, code: String) async throws -> AuthResponse {
+        let requestBody: [String: Any] = [
+            "phone_number": phoneNumber,
+            "code": code
+        ]
+        return try await postRequestGetToken(requestBody: requestBody, responseModel: AuthResponse.self)
+    }
+    
     func postRequestForCode(phoneNumber: String) async throws -> [String: Any] {
-        guard let url = createURL(from: getCodeUrl) else { throw HError.invalidURL }
+        guard let url = createURL(from: getCodeURL) else { throw HError.invalidURL }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -50,6 +67,36 @@ final class NetworkSwagger {
         return try await postRequest(responseModel: UserProfile.self, token: token)
     }
     
+    private func postRequestGetToken<T: Codable>(requestBody: [String: Any], responseModel: T.Type) async throws -> T {
+        guard let url = createURL(from: getTokenURL) else {
+            throw HError.invalidURL
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+        } catch {
+            throw HError.invalidData
+        }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw HError.invalidResponse
+        }
+        
+        switch httpResponse.statusCode {
+        case 200...299:
+            return try decoder.decode(responseModel, from: data)
+        default:
+            let errorData = String(data: data, encoding: .utf8) ?? "No error information"
+            throw HError.serverError(code: httpResponse.statusCode, message: errorData)
+        }
+    }
+    
     private func buildURLComponents(from baseURL: String) -> URLComponents? {
         guard let base = URL(string: baseURL), let baseScheme = base.scheme, let baseHost = base.host else {
             print("Invalid base URL")
@@ -75,12 +122,12 @@ final class NetworkSwagger {
     }
     
     private func createURL(from baseURL: String) -> URL? {
-        var urlComponents = buildURLComponents(from: baseURL)
+        let urlComponents = buildURLComponents(from: baseURL)
         return urlComponents?.url
     }
     
     private func postRequest<T: Codable>(responseModel: T.Type, token: String) async throws -> T {
-        guard let url = createURL(from: baseHospitalURL) else {
+        guard let url = createURL(from: getProfileURL) else {
             throw HError.invalidURL
         }
         var request = URLRequest(url: url)

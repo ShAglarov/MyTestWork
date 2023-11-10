@@ -34,10 +34,11 @@ final class RegistrationViewController: UIViewController {
     }()
     
     private lazy var loginButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Login", for: .normal)
-        button.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
-        return button
+        appView.button(title: "Отправить смс", backgroundColor: .blue, action: #selector(loginTapped), target: self)
+    }()
+    
+    private lazy var newTokenTextView: UITextView = {
+        appView.textView(isScrollEnabled: false)
     }()
     
     // Запускаем индикатор загрузки в панели навигации
@@ -65,15 +66,28 @@ final class RegistrationViewController: UIViewController {
     private func setupUI() {
         view.addSubview(usernameTextField)
         view.addSubview(loginButton)
+        view.addSubview(newTokenTextView)
         
         usernameTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
-            make.left.equalTo(view).offset(20)
-            make.right.equalTo(view).offset(-20)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(40)
+        }
+        usernameTextField.text = "+7"
+        
+        loginButton.snp.makeConstraints { make in
+            make.top.equalTo(usernameTextField.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(40)
         }
         
-        usernameTextField.text = "+7"
+        newTokenTextView.snp.makeConstraints { make in
+            make.top.equalTo(loginButton.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.greaterThanOrEqualTo(40)
+            make.height.lessThanOrEqualTo(200)
+        }
+        newTokenTextView.isHidden = true
     }
     
     
@@ -113,9 +127,24 @@ final class RegistrationViewController: UIViewController {
     
     @objc private func loginTapped() {
         viewModel.userName = usernameTextField.text ?? ""
-        // Запускаем асинхронную задачу для входа в систему
+
         Task {
-            await viewModel.performLogin()
+            guard let numberPhone = usernameTextField.text else { return }
+            await viewModel.requestCode(phoneNumber: numberPhone)
+            await viewModel.authenticateWithCode(phoneNumber: numberPhone, code: "1111")
+            DispatchQueue.main.async {
+                if let authInUser = self.viewModel.authInUser,
+                   let numberPhone = self.usernameTextField.text {
+                    self.newTokenTextView.isHidden = false
+                    self.newTokenTextView.text = "access: \(authInUser.access)\n\nrefresh: \(authInUser.refresh)"
+                    // Сохраняем токен в буфер обмена
+                    UIPasteboard.general.string = "access: \(authInUser.access)\n\nrefresh: \(authInUser.refresh)"
+                    // Отправляем токен и номер телефона в другой контроллер
+                    self.coordinator?.onSendToken?(authInUser.access, numberPhone)
+                } else if let error = self.viewModel.loginError {
+                    self.showAlert(with: "Ошибка", message: error)
+                }
+            }
         }
     }
     

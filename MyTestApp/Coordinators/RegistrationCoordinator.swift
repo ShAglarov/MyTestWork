@@ -13,6 +13,7 @@ final class RegistrationCoordinator: Coordinator {
     
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    var onSendToken: ((String, String) -> Void)?
     private var cancellables: Set<AnyCancellable> = []
     
     init(navigationController: UINavigationController) {
@@ -22,9 +23,9 @@ final class RegistrationCoordinator: Coordinator {
     func start<USER: Codable>(user: USER? = nil) {
         let viewModel = RegistrationViewModel()
         
-        let vc = RegistrationViewController(viewModel: viewModel)
-        vc.coordinator = self
-        navigationController.pushViewController(vc, animated: true)
+        let regVC = RegistrationViewController(viewModel: viewModel)
+        regVC.coordinator = self
+        navigationController.pushViewController(regVC, animated: true)
         
         viewModel.$loggedInUser.sink { [weak self] (user: UserProfile?) in
             if let user = user {
