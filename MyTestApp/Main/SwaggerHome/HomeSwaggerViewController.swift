@@ -24,64 +24,222 @@ final class HomeSwaggerViewController: UIViewController {
     
     weak var coordinator: SwaggerHomeCoordinator?
 
-    lazy var firstNameTextField: UILabel = {
-        appView.textLabel(text: "Имя")
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    var profileUser: UserProfile?
+
+    lazy var firstNameLabel: UILabel = {
+        appView.textLabel(text: "First Name: \(profileUser)")
     }()
-    
-    lazy var lastNameTextField: UILabel = {
-        appView.textLabel(text: "Фамилия")
+    lazy var lastNameLabel: UILabel = {
+        appView.textLabel(text: "Last Name")
     }()
-    
-    private lazy var loginButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Login", for: .normal)
-        button.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
-        return button
+     lazy var patronymicLabel: UILabel = {
+        appView.textLabel(text: "Patronymic")
     }()
+     lazy var birthDay: UILabel = {
+        appView.textLabel(text: "Date of Birth")
+    }()
+     lazy var emailLabel: UILabel = {
+        appView.textLabel(text: "Email")
+    }()
+     lazy var genderLabel: UILabel = {
+        appView.textLabel(text: "Gender")
+    }()
+
+     lazy var countryLabel: UILabel = {
+        appView.textLabel(text: "Country")
+    }()
+     lazy var countryLabelTwo: UILabel = {
+        appView.textLabel(text: "Country Label")
+    }()
+     lazy var cityIDLabel: UILabel = {
+        appView.textLabel(text: "City ID")
+    }()
+     lazy var cityLabel: UILabel = {
+        appView.textLabel(text: "City")
+    }()
+     lazy var phoneLabel: UILabel = {
+        appView.textLabel(text: "Phone")
+    }()
+     lazy var avatarLabel: UILabel = {
+        appView.textLabel(text: "Avatar")
+    }()
+     lazy var avatarURLLabel: UILabel = {
+        appView.textLabel(text: "Avatar URL")
+    }()
+     lazy var isDoctorLabel: UILabel = {
+        appView.textLabel(text: "Is Doctor?")
+    }()
+     lazy var isDoctorSwitch: UISwitch = {
+        var isDoctor = UISwitch()
+        return isDoctor
+    }()
+     lazy var isConfirmedDoctorLabel: UILabel = {
+        appView.textLabel(text: "Is Confirmed Doctor?")
+    }()
+     lazy var isConfirmedDoctorSwitch: UISwitch = {
+        var isConfirmedDoctor = UISwitch()
+        return isConfirmedDoctor
+    }()
+     lazy var birthdayDatePicker: UIDatePicker = {
+        var birthday = UIDatePicker()
+        return birthday
+    }()
+
+    // Запускаем индикатор загрузки в панели навигации
+    func showLoading() {
+        let activityIndicatorView = UIActivityIndicatorView(style: .medium)
+        activityIndicatorView.startAnimating()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
+    }
     
-    @objc private func loginTapped() {
-        navigationController?.popViewController(animated: true)
+    // Скрываем индикатор загрузки и возвращаем кнопки добавления на панель навигации
+    func hideLoading() {
+        self.navigationItem.rightBarButtonItem = nil
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-
-        setupUI()
+        
+        setupScrollView()
+        setupUserProfileUI()
+        
     }
-
-    private func setupUI() {
+    
+    func setupScrollView() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
         
-        view.addSubview(firstNameTextField)
-        view.addSubview(lastNameTextField)
-        view.addSubview(loginButton)
-        
-        firstNameTextField.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
-            make.left.equalTo(view).offset(20)
-            make.right.equalTo(view).offset(-20)
-            make.height.equalTo(40)
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
-        lastNameTextField.snp.makeConstraints { make in
-            make.top.equalTo(firstNameTextField.snp.bottom).offset(20)
-            make.left.right.equalTo(firstNameTextField)
-            make.height.equalTo(40)
-        }
-        
-        loginButton.snp.makeConstraints { make in
-            make.top.equalTo(lastNameTextField.snp.bottom).offset(40)
-            make.centerX.equalTo(view)
-            make.height.equalTo(50)
-            make.width.equalTo(200)
+        contentView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(scrollView)
+            make.left.right.equalTo(view)
         }
     }
+    
+    func setupUserProfileUI() {
+        var lastView: UIView = contentView
+        
+        contentView.addSubview(phoneLabel)
+        setupConstraintsForView(phoneLabel, below: lastView, isTopView: true)
+        lastView = phoneLabel
 
-    private func showAlert(with title: String, message: String, completion: (() -> Void)? = nil) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            completion?()
-        })
-        present(alert, animated: true)
+        contentView.addSubview(firstNameLabel)
+        setupConstraintsForView(firstNameLabel, below: lastView)
+        lastView = firstNameLabel
+
+        contentView.addSubview(lastNameLabel)
+        setupConstraintsForView(lastNameLabel, below: lastView)
+        lastView = lastNameLabel
+
+        contentView.addSubview(patronymicLabel)
+        setupConstraintsForView(patronymicLabel, below: lastView)
+        lastView = patronymicLabel
+
+        contentView.addSubview(birthDay)
+        setupConstraintsForView(birthDay, below: lastView)
+        lastView = birthDay
+
+        contentView.addSubview(emailLabel)
+        setupConstraintsForView(emailLabel, below: lastView)
+        lastView = emailLabel
+
+        contentView.addSubview(genderLabel)
+        setupConstraintsForView(genderLabel, below: lastView)
+        lastView = genderLabel
+
+        contentView.addSubview(genderLabel)
+        setupConstraintsForView(genderLabel, below: lastView)
+        lastView = genderLabel
+
+        contentView.addSubview(countryLabel)
+        setupConstraintsForView(countryLabel, below: lastView)
+        lastView = countryLabel
+
+        contentView.addSubview(countryLabelTwo)
+        setupConstraintsForView(countryLabelTwo, below: lastView)
+        lastView = countryLabelTwo
+
+        contentView.addSubview(cityIDLabel)
+        setupConstraintsForView(cityIDLabel, below: lastView)
+        lastView = cityIDLabel
+
+        contentView.addSubview(cityLabel)
+        setupConstraintsForView(cityLabel, below: lastView)
+        lastView = cityLabel
+
+        contentView.addSubview(avatarLabel)
+        setupConstraintsForView(avatarLabel, below: lastView)
+        lastView = avatarLabel
+
+        contentView.addSubview(avatarURLLabel)
+        setupConstraintsForView(avatarURLLabel, below: lastView)
+        lastView = avatarURLLabel
+
+        contentView.addSubview(isDoctorLabel)
+        setupConstraintsForLabel(isDoctorLabel, beside: lastView)
+        lastView = isDoctorLabel
+
+        contentView.addSubview(isDoctorSwitch)
+        setupConstraintsForSwitch(isDoctorSwitch, beside: isDoctorLabel)
+        lastView = isDoctorSwitch
+
+        contentView.addSubview(isConfirmedDoctorLabel)
+        setupConstraintsForLabel(isConfirmedDoctorLabel, beside: lastView)
+        lastView = isConfirmedDoctorLabel
+
+        contentView.addSubview(isConfirmedDoctorSwitch)
+        setupConstraintsForSwitch(isConfirmedDoctorSwitch, beside: isConfirmedDoctorLabel)
+        lastView = isConfirmedDoctorSwitch
+        
+        contentView.snp.makeConstraints { make in
+            make.bottom.equalTo(lastView).offset(20)
+        }
+    }
+
+    func addLabelAndSetConstraints(Label: UILabel, below lastView: UIView, isTopView: Bool = false) {
+        contentView.addSubview(Label)
+        setupConstraintsForView(Label, below: lastView, isTopView: isTopView)
+    }
+
+    func setupConstraintsForView(_ view: UIView, below lastView: UIView, isTopView: Bool = false) {
+        view.snp.makeConstraints { make in
+            if isTopView {
+                make.top.equalToSuperview().offset(20)
+            } else {
+                make.top.equalTo(lastView.snp.bottom).offset(10)
+            }
+            make.left.right.equalToSuperview().inset(20)
+            
+            if view is UILabel {
+                make.height.equalTo(40)
+            } else if view is UIDatePicker {
+                make.height.equalTo(100)
+            } else if view is UIButton {
+                make.height.equalTo(50)
+            } else if view is UISegmentedControl {
+                make.height.equalTo(30)
+            } else if view is UISwitch {
+                make.height.equalTo(31)
+            }
+        }
+    }
+
+    func setupConstraintsForSwitch(_ switchControl: UISwitch, beside lastLabel: UILabel) {
+        switchControl.snp.makeConstraints { make in
+            make.centerY.equalTo(lastLabel)
+            make.left.equalTo(lastLabel.snp.right).offset(10)
+        }
+    }
+    func setupConstraintsForLabel(_ label: UILabel, beside lastView: UIView) {
+        label.snp.makeConstraints { make in
+            make.top.equalTo(lastView.snp.bottom).offset(10)
+            make.left.equalToSuperview().inset(20)
+        }
     }
 }
