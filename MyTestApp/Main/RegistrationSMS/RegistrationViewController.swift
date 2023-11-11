@@ -32,26 +32,79 @@ final class RegistrationViewController: UIViewController {
     let contentView = UIView()
     var profileUser: UserProfile?
 
-    private var usernameTextField: UITextField!
-    private var firstNameTextField: UITextField!
-    private var lastNameTextField: UITextField!
-    private var patronymicTextField: UITextField!
-    private var birthDay: UITextField!
-    private var emailTextField: UITextField!
-    private var genderTextField: UITextField!
-    private var genderLabel: UITextField!
-    private var countryTextField: UITextField!
-    private var countryLabelTextField: UITextField!
-    private var cityIDTextField: UITextField!
-    private var cityTextField: UITextField!
-    private var phoneTextField: UITextField!
-    private var avatar: UITextField!
-    private var avatarURL: UITextField!
-    private var isDoctorSwitch: UISwitch!
-    private var isConfirmedDoctorSwitch: UISwitch!
-    private var birthdayDatePicker: UIDatePicker!
-    private var loginButton: UIButton!
-    private var newTokenTextView: UITextView!
+    private lazy var usernameTextField: UITextField = {
+        appView.textField(placeholder: "Username")
+    }()
+    private lazy var firstNameTextField: UITextField = {
+        appView.textField(placeholder: "First Name")
+    }()
+    private lazy var lastNameTextField: UITextField = {
+        appView.textField(placeholder: "Last Name")
+    }()
+    private lazy var patronymicTextField: UITextField = {
+        appView.textField(placeholder: "Patronymic")
+    }()
+    private lazy var birthDay: UITextField = {
+        appView.textField(placeholder: "Date of Birth")
+    }()
+    private lazy var emailTextField: UITextField = {
+        appView.textField(placeholder: "Email")
+    }()
+    private lazy var genderTextField: UITextField = {
+        appView.textField(placeholder: "Gender")
+    }()
+    private lazy var genderLabel: UITextField = {
+        appView.textField(placeholder: "Gender Label")
+    }()
+    private lazy var countryTextField: UITextField = {
+        appView.textField(placeholder: "Country")
+    }()
+    private lazy var countryLabelTextField: UITextField = {
+        appView.textField(placeholder: "Country Label")
+    }()
+    private lazy var cityIDTextField: UITextField = {
+        appView.textField(placeholder: "City ID")
+    }()
+    private lazy var cityTextField: UITextField = {
+        appView.textField(placeholder: "City")
+    }()
+    private lazy var phoneTextField: UITextField = {
+        appView.textField(placeholder: "Phone")
+    }()
+    private lazy var avatar: UITextField = {
+        appView.textField(placeholder: "Avatar")
+    }()
+    private lazy var avatarURL: UITextField = {
+        appView.textField(placeholder: "Avatar URL")
+    }()
+    private lazy var isDoctorLabel: UILabel = {
+        appView.textLabel(text: "Is Doctor?")
+    }()
+    private lazy var isDoctorSwitch: UISwitch = {
+        var isDoctor = UISwitch()
+        return isDoctor
+    }()
+    private lazy var isConfirmedDoctorLabel: UILabel = {
+        appView.textLabel(text: "Is Confirmed Doctor?")
+    }()
+    private lazy var isConfirmedDoctorSwitch: UISwitch = {
+        var isConfirmedDoctor = UISwitch()
+        return isConfirmedDoctor
+    }()
+    private lazy var birthdayDatePicker: UIDatePicker = {
+        var birthday = UIDatePicker()
+        return birthday
+    }()
+    private lazy var loginButton: UIButton = {
+        appView.button(title: "Получить токен",
+                       titleColor: .white,
+                       backgroundColor: .blue,
+                       cornerRadius: 5,
+                       action: #selector(loginTapped), target: self)
+    }()
+    private lazy var newTokenTextView: UITextView = {
+        appView.textView(isScrollEnabled: false)
+    }()
     
     // Запускаем индикатор загрузки в панели навигации
     func showLoading() {
@@ -70,21 +123,10 @@ final class RegistrationViewController: UIViewController {
         view.backgroundColor = .white
         
         setupScrollView()
-        setupUI()
         setupUserProfileUI()
         
         // Настраиваем привязку к ViewModel
         bindViewModel()
-        
-    }
-    private func setupUI() {
-        
-//        newTokenTextView.snp.makeConstraints { make in
-//            make.top.equalTo(loginButton.snp.bottom).offset(20)
-//            make.leading.trailing.equalToSuperview().inset(20)
-//            make.height.greaterThanOrEqualTo(40)
-//            make.height.lessThanOrEqualTo(200)
-//        }
         
     }
     
@@ -106,32 +148,32 @@ final class RegistrationViewController: UIViewController {
         var lastView: UIView = contentView
         
         // Инициализация и настройка полей ввода и других элементов
-        phoneTextField = appView.textField(placeholder: "Phone")
+        //phoneTextField = appView.textField(placeholder: "Phone")
         contentView.addSubview(phoneTextField)
         setupConstraintsForView(phoneTextField, below: lastView, isTopView: true)
         lastView = phoneTextField
         
-        usernameTextField = appView.textField(placeholder: "Username")
+        //usernameTextField = appView.textField(placeholder: "Username")
         contentView.addSubview(usernameTextField)
         setupConstraintsForView(usernameTextField, below: lastView)
         lastView = usernameTextField
 
-        firstNameTextField = appView.textField(placeholder: "First Name")
+        //firstNameTextField = appView.textField(placeholder: "First Name")
         contentView.addSubview(firstNameTextField)
         setupConstraintsForView(firstNameTextField, below: lastView)
         lastView = firstNameTextField
 
-        lastNameTextField = appView.textField(placeholder: "Last Name")
+        //lastNameTextField = appView.textField(placeholder: "Last Name")
         contentView.addSubview(lastNameTextField)
         setupConstraintsForView(lastNameTextField, below: lastView)
         lastView = lastNameTextField
 
-        patronymicTextField = appView.textField(placeholder: "Patronymic")
+        //patronymicTextField = appView.textField(placeholder: "Patronymic")
         contentView.addSubview(patronymicTextField)
         setupConstraintsForView(patronymicTextField, below: lastView)
         lastView = patronymicTextField
         
-        birthDay = appView.textField(placeholder: "Date of Birth")
+        //birthDay = appView.textField(placeholder: "Date of Birth")
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .wheels
@@ -150,84 +192,77 @@ final class RegistrationViewController: UIViewController {
         setupConstraintsForView(birthDay, below: lastView)
         lastView = birthDay
 
-        emailTextField = appView.textField(placeholder: "Email")
+        //emailTextField = appView.textField(placeholder: "Email")
         contentView.addSubview(emailTextField)
         setupConstraintsForView(emailTextField, below: lastView)
         lastView = emailTextField
 
-        genderTextField = appView.textField(placeholder: "Gender")
+        //genderTextField = appView.textField(placeholder: "Gender")
         contentView.addSubview(genderTextField)
         setupConstraintsForView(genderTextField, below: lastView)
         lastView = genderTextField
 
-        genderLabel = appView.textField(placeholder: "Gender Label")
+        //genderLabel = appView.textField(placeholder: "Gender Label")
         contentView.addSubview(genderLabel)
         setupConstraintsForView(genderLabel, below: lastView)
         lastView = genderLabel
 
-        countryTextField = appView.textField(placeholder: "Country")
+        //countryTextField = appView.textField(placeholder: "Country")
         contentView.addSubview(countryTextField)
         setupConstraintsForView(countryTextField, below: lastView)
         lastView = countryTextField
 
-        countryLabelTextField = appView.textField(placeholder: "Country Label")
+        //countryLabelTextField = appView.textField(placeholder: "Country Label")
         contentView.addSubview(countryLabelTextField)
         setupConstraintsForView(countryLabelTextField, below: lastView)
         lastView = countryLabelTextField
 
-        cityIDTextField = appView.textField(placeholder: "City ID")
+        //cityIDTextField = appView.textField(placeholder: "City ID")
         contentView.addSubview(cityIDTextField)
         setupConstraintsForView(cityIDTextField, below: lastView)
         lastView = cityIDTextField
 
-        cityTextField = appView.textField(placeholder: "City")
+        //cityTextField = appView.textField(placeholder: "City")
         contentView.addSubview(cityTextField)
         setupConstraintsForView(cityTextField, below: lastView)
         lastView = cityTextField
 
-        avatar = appView.textField(placeholder: "Avatar")
+        //avatar = appView.textField(placeholder: "Avatar")
         contentView.addSubview(avatar)
         setupConstraintsForView(avatar, below: lastView)
         lastView = avatar
 
-        avatarURL = appView.textField(placeholder: "Avatar URL")
+        //avatarURL = appView.textField(placeholder: "Avatar URL")
         contentView.addSubview(avatarURL)
         setupConstraintsForView(avatarURL, below: lastView)
         lastView = avatarURL
 
-        let isDoctorLabel = UILabel()
-        isDoctorLabel.text = "Is Doctor?"
+        //let isDoctorLabel = UILabel()
         contentView.addSubview(isDoctorLabel)
         setupConstraintsForLabel(isDoctorLabel, beside: lastView)
         lastView = isDoctorLabel
 
-        isDoctorSwitch = UISwitch()
+        //isDoctorSwitch = UISwitch()
         contentView.addSubview(isDoctorSwitch)
         setupConstraintsForSwitch(isDoctorSwitch, beside: isDoctorLabel)
         lastView = isDoctorSwitch
 
-        let isConfirmedDoctorLabel = UILabel()
-        isConfirmedDoctorLabel.text = "Is Confirmed Doctor?"
+        //let isConfirmedDoctorLabel = UILabel()
+        //isConfirmedDoctorLabel.text = "Is Confirmed Doctor?"
         contentView.addSubview(isConfirmedDoctorLabel)
         setupConstraintsForLabel(isConfirmedDoctorLabel, beside: lastView)
         lastView = isConfirmedDoctorLabel
 
-        isConfirmedDoctorSwitch = UISwitch()
+        //isConfirmedDoctorSwitch = UISwitch()
         contentView.addSubview(isConfirmedDoctorSwitch)
         setupConstraintsForSwitch(isConfirmedDoctorSwitch, beside: isConfirmedDoctorLabel)
         lastView = isConfirmedDoctorSwitch
         
-        loginButton = appView.button(title: "Получить токен",
-                                     titleColor: .white,
-                                     backgroundColor: .blue, 
-                                     cornerRadius: 5,
-                                     action: #selector(loginTapped), target: self
-        )
         contentView.addSubview(loginButton)
         setupConstraintsForView(loginButton, below: lastView)
         lastView = loginButton
         
-        newTokenTextView = appView.textView(isScrollEnabled: false)
+        //newTokenTextView = appView.textView(isScrollEnabled: false)
         newTokenTextView.isHidden = true
         contentView.addSubview(newTokenTextView)
         setupConstraintsForView(newTokenTextView, below: lastView)
@@ -299,6 +334,7 @@ final class RegistrationViewController: UIViewController {
               let phone = phoneTextField.text, !phone.isEmpty,
               let cityIDString = cityIDTextField.text, let cityID = Int(cityIDString),
               let avatarURLString = avatarURL.text else {
+            print("createUserProfile nil")
             return nil
         }
         
@@ -363,10 +399,17 @@ final class RegistrationViewController: UIViewController {
     }
     
     @objc private func loginTapped() {
-        let userProfile = createUserProfile()
+        guard let numberPhone = usernameTextField.text, !numberPhone.isEmpty else {
+            showAlert(with: "Ошибка", message: "Пожалуйста, введите номер телефона.")
+            return
+        }
+
+        guard let profile = createUserProfile() else {
+            showAlert(with: "Ошибка", message: "Пожалуйста, заполните все поля.")
+            return
+        }
 
         Task {
-            guard let numberPhone = usernameTextField.text else { return }
             await viewModel.requestCode(phoneNumber: numberPhone)
             await viewModel.authenticateWithCode(phoneNumber: numberPhone, code: "1111")
             DispatchQueue.main.async {
@@ -382,6 +425,17 @@ final class RegistrationViewController: UIViewController {
                     self.showAlert(with: "Ошибка", message: error)
                 }
             }
+        }
+    }
+
+    private func updateUIWithTokenInfo(access: String, refresh: String, numberPhone: String) {
+        DispatchQueue.main.async {
+            self.newTokenTextView.isHidden = false
+            self.newTokenTextView.text = "access: \(access)\nrefresh: \(refresh)"
+            // Сохраняем токен в буфер обмена
+            UIPasteboard.general.string = "access: \(access)\nrefresh: \(refresh)"
+            // Отправляем токен и номер телефона в другой контроллер
+            self.coordinator?.onSendToken?(access, numberPhone)
         }
     }
     
