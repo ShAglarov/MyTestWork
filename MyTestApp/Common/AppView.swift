@@ -29,7 +29,7 @@ final class AppView {
     // Функция для создания UITextField с заданным текстом-заполнителем.
     func textField(placeholder: String,
                    borderStyle: UITextField.BorderStyle = .roundedRect,
-                   isSecureTextEntry: Bool = true ) -> UITextField 
+                   isSecureTextEntry: Bool = false ) -> UITextField 
     {
         let textField = UITextField()
         textField.placeholder = placeholder // устанавливаем текст-заполнитель
@@ -47,12 +47,33 @@ final class AppView {
     }
     
     // Функция для создания UITextView с определенной шириной границы, цветом границы и радиусом угла.
-    func textView(borderWidth: CGFloat = 0.5, borderColor: UIColor = .black, cornerRadius: CGFloat = 10.0) -> UITextView {
+    func textView(borderWidth: CGFloat = 0.5, borderColor: UIColor = .black, cornerRadius: CGFloat = 10.0, isScrollEnabled: Bool = false) -> UITextView {
         let textView = UITextView()
         textView.layer.borderWidth = borderWidth // устанавливаем ширину границы
         textView.layer.borderColor = borderColor.cgColor // устанавливаем цвет границы
         textView.layer.cornerRadius = cornerRadius // устанавливаем радиус угла
+        textView.isScrollEnabled = isScrollEnabled
         return textView // возвращаем созданное текстовое поле
+    }
+    
+    func button(title: String,
+                titleColor: UIColor = .systemBackground,
+                backgroundColor: UIColor = .systemBackground,
+                fontSize: CGFloat = 16,
+                cornerRadius: CGFloat = 0.0,
+                action: Selector? = nil,
+                target: Any? = nil) -> UIButton
+    {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal) // задаем текст кнопки
+        button.setTitleColor(titleColor, for: .normal) // устанавливаем цвет текста
+        button.backgroundColor = backgroundColor // устанавливаем цвет фона
+        button.titleLabel?.font = UIFont.systemFont(ofSize: fontSize) // устанавливаем размер шрифта
+        button.layer.cornerRadius = cornerRadius // устанавливаем радиус угла
+        if let action = action, let target = target {
+            button.addTarget(target, action: action, for: .touchUpInside) // добавляем обработчик действий, если он предоставлен
+        }
+        return button // возвращаем созданную кнопку
     }
     
     func collectionView(itemSize: CGSize = CGSize(width: UIScreen.main.bounds.width, height: 150),

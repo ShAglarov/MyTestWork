@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SDWebImage
 
-class CombinedUserView: UICollectionViewCell {
+class CombinedUserViewCell: UICollectionViewCell {
     
     private var nameLabel: UILabel = {
         let label = UILabel()

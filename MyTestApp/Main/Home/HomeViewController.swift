@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
 
     private var viewModel = HomeViewModel()
     private let appView = AppView()
@@ -26,7 +26,7 @@ class HomeViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         appView.collectionView(
-            cellType: CombinedUserView.self,
+            cellType: CombinedUserViewCell.self,
             cellIdentifier: "CombinedUserCell",
             delegate: self,
             dataSource: self
@@ -88,7 +88,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CombinedUserCell", for: indexPath) as? CombinedUserView else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CombinedUserCell", for: indexPath) as? CombinedUserViewCell else {
             return UICollectionViewCell()
         }
         let combinedUser = viewModel.combinedUsers[indexPath.item]
