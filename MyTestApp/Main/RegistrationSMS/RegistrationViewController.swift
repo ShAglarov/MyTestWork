@@ -28,18 +28,30 @@ final class RegistrationViewController: UIViewController {
     private var cancellables: Set<AnyCancellable> = []
     
     let appView = AppView()
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    var profileUser: UserProfile?
 
-    lazy var usernameTextField: UITextField = {
-        appView.textField(placeholder: "Номер телефона")
-    }()
-    
-    private lazy var loginButton: UIButton = {
-        appView.button(title: "Отправить смс", backgroundColor: .blue, action: #selector(loginTapped), target: self)
-    }()
-    
-    private lazy var newTokenTextView: UITextView = {
-        appView.textView(isScrollEnabled: false)
-    }()
+    private var usernameTextField: UITextField!
+    private var firstNameTextField: UITextField!
+    private var lastNameTextField: UITextField!
+    private var patronymicTextField: UITextField!
+    private var birthDay: UITextField!
+    private var emailTextField: UITextField!
+    private var genderTextField: UITextField!
+    private var genderLabel: UITextField!
+    private var countryTextField: UITextField!
+    private var countryLabelTextField: UITextField!
+    private var cityIDTextField: UITextField!
+    private var cityTextField: UITextField!
+    private var phoneTextField: UITextField!
+    private var avatar: UITextField!
+    private var avatarURL: UITextField!
+    private var isDoctorSwitch: UISwitch!
+    private var isConfirmedDoctorSwitch: UISwitch!
+    private var birthdayDatePicker: UIDatePicker!
+    private var loginButton: UIButton!
+    private var newTokenTextView: UITextView!
     
     // Запускаем индикатор загрузки в панели навигации
     func showLoading() {
@@ -57,39 +69,255 @@ final class RegistrationViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        setupScrollView()
         setupUI()
+        setupUserProfileUI()
         
         // Настраиваем привязку к ViewModel
         bindViewModel()
         
     }
     private func setupUI() {
-        view.addSubview(usernameTextField)
-        view.addSubview(loginButton)
-        view.addSubview(newTokenTextView)
         
-        usernameTextField.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(40)
+//        newTokenTextView.snp.makeConstraints { make in
+//            make.top.equalTo(loginButton.snp.bottom).offset(20)
+//            make.leading.trailing.equalToSuperview().inset(20)
+//            make.height.greaterThanOrEqualTo(40)
+//            make.height.lessThanOrEqualTo(200)
+//        }
+        
+    }
+    
+    func setupScrollView() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
-        usernameTextField.text = "+7"
         
-        loginButton.snp.makeConstraints { make in
-            make.top.equalTo(usernameTextField.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(40)
+        contentView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(scrollView)
+            make.left.right.equalTo(view)
         }
+    }
+    
+    func setupUserProfileUI() {
+        var lastView: UIView = contentView
         
+        // Инициализация и настройка полей ввода и других элементов
+        phoneTextField = appView.textField(placeholder: "Phone")
+        contentView.addSubview(phoneTextField)
+        setupConstraintsForView(phoneTextField, below: lastView, isTopView: true)
+        lastView = phoneTextField
+        
+        usernameTextField = appView.textField(placeholder: "Username")
+        contentView.addSubview(usernameTextField)
+        setupConstraintsForView(usernameTextField, below: lastView)
+        lastView = usernameTextField
+
+        firstNameTextField = appView.textField(placeholder: "First Name")
+        contentView.addSubview(firstNameTextField)
+        setupConstraintsForView(firstNameTextField, below: lastView)
+        lastView = firstNameTextField
+
+        lastNameTextField = appView.textField(placeholder: "Last Name")
+        contentView.addSubview(lastNameTextField)
+        setupConstraintsForView(lastNameTextField, below: lastView)
+        lastView = lastNameTextField
+
+        patronymicTextField = appView.textField(placeholder: "Patronymic")
+        contentView.addSubview(patronymicTextField)
+        setupConstraintsForView(patronymicTextField, below: lastView)
+        lastView = patronymicTextField
+        
+        birthDay = appView.textField(placeholder: "Date of Birth")
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .wheels
+        birthDay.inputView = datePicker
+
+        // Добавление тулбара с кнопкой "Done"
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDone))
+        toolbar.setItems([doneButton], animated: true)
+        birthDay.inputAccessoryView = toolbar
+
+        datePicker.addTarget(self, action: #selector(datePickerChanged(picker:)), for: .valueChanged)
+
+        contentView.addSubview(birthDay)  // Исправлено на добавление в contentView
+        setupConstraintsForView(birthDay, below: lastView)
+        lastView = birthDay
+
+        emailTextField = appView.textField(placeholder: "Email")
+        contentView.addSubview(emailTextField)
+        setupConstraintsForView(emailTextField, below: lastView)
+        lastView = emailTextField
+
+        genderTextField = appView.textField(placeholder: "Gender")
+        contentView.addSubview(genderTextField)
+        setupConstraintsForView(genderTextField, below: lastView)
+        lastView = genderTextField
+
+        genderLabel = appView.textField(placeholder: "Gender Label")
+        contentView.addSubview(genderLabel)
+        setupConstraintsForView(genderLabel, below: lastView)
+        lastView = genderLabel
+
+        countryTextField = appView.textField(placeholder: "Country")
+        contentView.addSubview(countryTextField)
+        setupConstraintsForView(countryTextField, below: lastView)
+        lastView = countryTextField
+
+        countryLabelTextField = appView.textField(placeholder: "Country Label")
+        contentView.addSubview(countryLabelTextField)
+        setupConstraintsForView(countryLabelTextField, below: lastView)
+        lastView = countryLabelTextField
+
+        cityIDTextField = appView.textField(placeholder: "City ID")
+        contentView.addSubview(cityIDTextField)
+        setupConstraintsForView(cityIDTextField, below: lastView)
+        lastView = cityIDTextField
+
+        cityTextField = appView.textField(placeholder: "City")
+        contentView.addSubview(cityTextField)
+        setupConstraintsForView(cityTextField, below: lastView)
+        lastView = cityTextField
+
+        avatar = appView.textField(placeholder: "Avatar")
+        contentView.addSubview(avatar)
+        setupConstraintsForView(avatar, below: lastView)
+        lastView = avatar
+
+        avatarURL = appView.textField(placeholder: "Avatar URL")
+        contentView.addSubview(avatarURL)
+        setupConstraintsForView(avatarURL, below: lastView)
+        lastView = avatarURL
+
+        let isDoctorLabel = UILabel()
+        isDoctorLabel.text = "Is Doctor?"
+        contentView.addSubview(isDoctorLabel)
+        setupConstraintsForLabel(isDoctorLabel, beside: lastView)
+        lastView = isDoctorLabel
+
+        isDoctorSwitch = UISwitch()
+        contentView.addSubview(isDoctorSwitch)
+        setupConstraintsForSwitch(isDoctorSwitch, beside: isDoctorLabel)
+        lastView = isDoctorSwitch
+
+        let isConfirmedDoctorLabel = UILabel()
+        isConfirmedDoctorLabel.text = "Is Confirmed Doctor?"
+        contentView.addSubview(isConfirmedDoctorLabel)
+        setupConstraintsForLabel(isConfirmedDoctorLabel, beside: lastView)
+        lastView = isConfirmedDoctorLabel
+
+        isConfirmedDoctorSwitch = UISwitch()
+        contentView.addSubview(isConfirmedDoctorSwitch)
+        setupConstraintsForSwitch(isConfirmedDoctorSwitch, beside: isConfirmedDoctorLabel)
+        lastView = isConfirmedDoctorSwitch
+        
+        newTokenTextView = appView.textView(isScrollEnabled: false)
+        newTokenTextView.isHidden = true
+        contentView.addSubview(newTokenTextView)
+        setupConstraintsForView(newTokenTextView, below: lastView)
+        
+        // Задайте дополнительные констрейнты для newTokenTextView
         newTokenTextView.snp.makeConstraints { make in
-            make.top.equalTo(loginButton.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(20)
             make.height.greaterThanOrEqualTo(40)
             make.height.lessThanOrEqualTo(200)
         }
-        newTokenTextView.isHidden = true
+        lastView = newTokenTextView
+        
+        contentView.snp.makeConstraints { make in
+            make.bottom.equalTo(lastView).offset(20)
+        }
     }
+
+    func addTextFieldAndSetConstraints(textField: UITextField, below lastView: UIView, isTopView: Bool = false) {
+        contentView.addSubview(textField)
+        setupConstraintsForView(textField, below: lastView, isTopView: isTopView)
+    }
+
+    func setupConstraintsForView(_ view: UIView, below lastView: UIView, isTopView: Bool = false) {
+        view.snp.makeConstraints { make in
+            if isTopView {
+                make.top.equalToSuperview().offset(20)
+            } else {
+                make.top.equalTo(lastView.snp.bottom).offset(10)
+            }
+            make.left.right.equalToSuperview().inset(20)
+            
+            if view is UITextField {
+                make.height.equalTo(40)
+            } else if view is UIDatePicker {
+                make.height.equalTo(100)
+            } else if view is UIButton {
+                make.height.equalTo(50)
+            } else if view is UISegmentedControl {
+                make.height.equalTo(30)
+            } else if view is UISwitch {
+                make.height.equalTo(31)
+            }
+        }
+    }
+
+    func setupConstraintsForSwitch(_ switchControl: UISwitch, beside lastLabel: UILabel) {
+        switchControl.snp.makeConstraints { make in
+            make.centerY.equalTo(lastLabel)
+            make.left.equalTo(lastLabel.snp.right).offset(10)
+        }
+    }
+    func setupConstraintsForLabel(_ label: UILabel, beside lastView: UIView) {
+        label.snp.makeConstraints { make in
+            make.top.equalTo(lastView.snp.bottom).offset(10)
+            make.left.equalToSuperview().inset(20)
+        }
+    }
+
     
+    func createUserProfile() -> UserProfile? {
+        guard let username = usernameTextField.text, !username.isEmpty,
+              let firstName = firstNameTextField.text, !firstName.isEmpty,
+              let lastName = lastNameTextField.text, !lastName.isEmpty,
+              let patronymic = patronymicTextField.text, !patronymic.isEmpty,
+              let email = emailTextField.text, !email.isEmpty,
+              let gender = genderTextField.text, !gender.isEmpty,
+              let genderLabel = genderLabel.text, !genderLabel.isEmpty,
+              let country = countryTextField.text, !country.isEmpty,
+              let countryLabel = countryLabelTextField.text, !countryLabel.isEmpty,
+              let city = cityTextField.text, !city.isEmpty,
+              let phone = phoneTextField.text, !phone.isEmpty,
+              let cityIDString = cityIDTextField.text, let cityID = Int(cityIDString),
+              let avatarURLString = avatarURL.text else {
+            return nil
+        }
+        
+        let birthdayTimestamp = Int(birthdayDatePicker.date.timeIntervalSince1970)
+        let avatarString = avatar.text ?? ""
+        let isDoctor = isDoctorSwitch.isOn
+        let isConfirmedDoctor = isConfirmedDoctorSwitch.isOn
+        
+        return UserProfile(
+            username: username,
+            first_name: firstName,
+            last_name: lastName,
+            patronymic: patronymic,
+            birthday: birthdayTimestamp,
+            email: email,
+            gender: gender,
+            gender_label: genderLabel,
+            country: country,
+            country_label: countryLabel,
+            city_id: cityID,
+            city: city,
+            phone: phone,
+            avatar: avatarString,
+            avatar_url: avatarURLString,
+            is_doctor: isDoctor,
+            is_confirmed_doctor: isConfirmedDoctor
+        )
+    }
     
     private func bindViewModel() {
         viewModel.$isLoading
@@ -126,7 +354,7 @@ final class RegistrationViewController: UIViewController {
     }
     
     @objc private func loginTapped() {
-        viewModel.userName = usernameTextField.text ?? ""
+        let userProfile = createUserProfile()
 
         Task {
             guard let numberPhone = usernameTextField.text else { return }
@@ -146,6 +374,17 @@ final class RegistrationViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc func datePickerChanged(picker: UIDatePicker) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        let timestamp = Int(picker.date.timeIntervalSince1970)
+        birthDay.text = "\(timestamp)"
+    }
+    
+    @objc func didTapDone() {
+        birthDay.resignFirstResponder()
     }
     
     private func showAlert(with title: String, message: String, completion: (() -> Void)? = nil) {
