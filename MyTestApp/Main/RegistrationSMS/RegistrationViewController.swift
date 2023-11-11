@@ -291,17 +291,17 @@ final class RegistrationViewController: UIViewController {
     }
 
     func createUserProfile() -> UserProfile? {
-        let firstName = firstNameTextField.text?.isEmpty ?? true ? "Шамиль" : firstNameTextField.text!
-        let lastName = lastNameTextField.text?.isEmpty ?? true ? "Агларов" : lastNameTextField.text!
+        let firstName = firstNameTextField.text?.isEmpty ?? true ? "-" : firstNameTextField.text!
+        let lastName = lastNameTextField.text?.isEmpty ?? true ? "-" : lastNameTextField.text!
         let email = emailTextField.text?.isEmpty ?? true ? "shamil.aglarov@gmail.com" : emailTextField.text!
         let countryLabel = countryLabelTextField.text?.isEmpty ?? true ? "Russia" : countryLabelTextField.text!
-        let phone = phoneTextField.text?.isEmpty ?? true ? "+79882088886" : phoneTextField.text!
+        let phone = phoneTextField.text?.isEmpty ?? true ? "" : phoneTextField.text!
         let cityID = Int(cityIDTextField.text ?? "1") ?? 1
         let birthdayTimestamp = Int(birthdayDatePicker.date.timeIntervalSince1970)
-        let patronymic = patronymicTextField.text?.isEmpty ?? true ? "Рамазанович" : patronymicTextField.text!
+        let patronymic = patronymicTextField.text?.isEmpty ?? true ? "-" : patronymicTextField.text!
         let gender = genderTextField.text?.isEmpty ?? true ? "male" : genderTextField.text!
         let country = countryTextField.text?.isEmpty ?? true ? "RU" : countryTextField.text!
-        let city = cityTextField.text?.isEmpty ?? true ? "Moscow" : cityTextField.text!
+        let city = cityTextField.text?.isEmpty ?? true ? "-" : cityTextField.text!
         let avatar = avatarTextField.text?.isEmpty ?? true ? "avatar" : avatarTextField.text!
         let avatarURL = avatarURLTextField.text?.isEmpty ?? true ? "avatar.jpeg" : avatarURLTextField.text!
         let isDoctor = isDoctorSwitch.isOn
