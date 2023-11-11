@@ -217,6 +217,16 @@ final class RegistrationViewController: UIViewController {
         setupConstraintsForSwitch(isConfirmedDoctorSwitch, beside: isConfirmedDoctorLabel)
         lastView = isConfirmedDoctorSwitch
         
+        loginButton = appView.button(title: "Получить токен",
+                                     titleColor: .white,
+                                     backgroundColor: .blue, 
+                                     cornerRadius: 5,
+                                     action: #selector(loginTapped), target: self
+        )
+        contentView.addSubview(loginButton)
+        setupConstraintsForView(loginButton, below: lastView)
+        lastView = loginButton
+        
         newTokenTextView = appView.textView(isScrollEnabled: false)
         newTokenTextView.isHidden = true
         contentView.addSubview(newTokenTextView)
@@ -275,7 +285,6 @@ final class RegistrationViewController: UIViewController {
         }
     }
 
-    
     func createUserProfile() -> UserProfile? {
         guard let username = usernameTextField.text, !username.isEmpty,
               let firstName = firstNameTextField.text, !firstName.isEmpty,
