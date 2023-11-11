@@ -11,11 +11,11 @@ import Moya
 
 final class LoginViewModel {
     
-    @Published var username: String = ""
-    @Published var password: String = ""
-    @Published var isLoading: Bool = false
+    @Published var userName = String()
+    @Published var password = String()
+    @Published var isLoading = false
     @Published var loginError: String? = nil
-    @Published var isLoggedIn: Bool = false
+    @Published var isLoggedIn = false
     // Добавляем свойство для авторизованного пользователя
     @Published var loggedInUser: User?
     
@@ -35,7 +35,7 @@ final class LoginViewModel {
                 do {
                     self?.users = try JSONDecoder().decode([User].self, from: response.data)
                     if let user = self?.users.first(where: {
-                        $0.username == self?.username && $0.id == Int(self?.password ?? "")
+                        $0.username == self?.userName && $0.id == Int(self?.password ?? "")
                     }) {
                         self?.isLoggedIn = true
                         // авторизованный пользователь

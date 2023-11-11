@@ -37,7 +37,9 @@ final class HomeViewModel {
             case .success(let response):
                 do {
                     self?.posts = try JSONDecoder().decode(Posts.self, from: response.data)
-                    self?.combinedUsers = self?.combineData(users: self?.users ?? [], posts: self?.posts ?? [], photos: self?.photos ?? []) ?? []
+                    self?.combinedUsers = self?.combineData(users: self?.users ?? [], 
+                                                            posts: self?.posts ?? [],
+                                                            photos: self?.photos ?? []) ?? []
                 } catch {
                     self?.error = "Error decoding posts: \(error)"
                 }
@@ -57,7 +59,9 @@ final class HomeViewModel {
             case .success(let response):
                 do {
                     self?.users = try JSONDecoder().decode(Users.self, from: response.data)
-                    self?.combinedUsers = self?.combineData(users: self?.users ?? [], posts: self?.posts ?? [], photos: self?.photos ?? []) ?? []  // Исправлено
+                    self?.combinedUsers = self?.combineData(users: self?.users ?? [], 
+                                                            posts: self?.posts ?? [],
+                                                            photos: self?.photos ?? []) ?? []
                 } catch {
                     self?.error = "Error decoding users: \(error)"
                 }
@@ -77,7 +81,9 @@ final class HomeViewModel {
             case .success(let response):
                 do {
                     self?.photos = try JSONDecoder().decode(Photos.self, from: response.data)
-                    self?.combinedUsers = self?.combineData(users: self?.users ?? [], posts: self?.posts ?? [], photos: self?.photos ?? []) ?? []  // Исправлено
+                    self?.combinedUsers = self?.combineData(users: self?.users ?? [], 
+                                                            posts: self?.posts ?? [],
+                                                            photos: self?.photos ?? []) ?? []
                 } catch {
                     self?.error = "Error decoding photos: \(error)"
                 }

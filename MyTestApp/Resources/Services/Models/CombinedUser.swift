@@ -9,6 +9,6 @@ import Foundation
 
 struct CombinedUser {
     let user: User
-    var posts: [Post]
-    var photos: [Photo]
+    var posts: Posts
+    var photos: Photos
 }

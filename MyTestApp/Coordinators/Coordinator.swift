@@ -9,5 +9,5 @@ import UIKit
 
 protocol Coordinator {
     var navigationController: UINavigationController { get set }
-    func start(user: User?)
+    func start<USER: Codable>(user: USER?)
 }

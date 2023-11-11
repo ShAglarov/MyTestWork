@@ -16,10 +16,14 @@ final class HomeCoordinator: Coordinator {
         self.navigationController = navigationController
     }
 
-    func start(user: User?) {
+    func start<USER: Codable>(user: USER? = nil) {
         let viewModel = HomeViewModel()
         let homeVC = HomeViewController(viewModel: viewModel)
-        homeVC.title = user?.name ?? "nil"
+        if let user = user as? User {
+            homeVC.title = user.name
+        } else {
+            homeVC.title = nil
+        }
         navigationController.pushViewController(homeVC, animated: true)
     }
 }

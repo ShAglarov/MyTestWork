@@ -109,13 +109,13 @@ final class LoginViewController: UIViewController {
 
         viewModel.$isLoggedIn.sink { [weak self] isLoggedIn in
             if isLoggedIn {
-                print(self?.viewModel.username ?? "")
+                print(self?.viewModel.userName ?? "")
             }
         }.store(in: &cancellables)
     }
     
     @objc private func loginTapped() {
-        viewModel.username = usernameTextField.text ?? ""
+        viewModel.userName = usernameTextField.text ?? ""
         viewModel.password = passwordTextField.text ?? ""
         viewModel.login()
     }

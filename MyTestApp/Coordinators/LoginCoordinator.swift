@@ -9,7 +9,6 @@ import UIKit
 import Combine
 
 final class LoginCoordinator: Coordinator {
-    
     var currentUser: User?
     
     var childCoordinators = [Coordinator]()
@@ -20,11 +19,11 @@ final class LoginCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start(user: User?) {
+    func start<USER>(user: USER? = nil) {
         let viewModel = LoginViewModel()
         let vc = LoginViewController(viewModel: viewModel)
         vc.coordinator = self
-        navigationController.pushViewController(vc, animated: false)
+        navigationController.pushViewController(vc, animated: true)
         
         // Обработка пользователя после успешного входа в систему
         viewModel.$loggedInUser.sink { [weak self] (user: User?) in
