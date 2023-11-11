@@ -32,9 +32,6 @@ final class RegistrationViewController: UIViewController {
     let contentView = UIView()
     var profileUser: UserProfile?
 
-    private lazy var usernameTextField: UITextField = {
-        appView.textField(placeholder: "Username")
-    }()
     private lazy var firstNameTextField: UITextField = {
         appView.textField(placeholder: "First Name")
     }()
@@ -71,10 +68,10 @@ final class RegistrationViewController: UIViewController {
     private lazy var phoneTextField: UITextField = {
         appView.textField(placeholder: "Phone")
     }()
-    private lazy var avatar: UITextField = {
+    private lazy var avatarTextField: UITextField = {
         appView.textField(placeholder: "Avatar")
     }()
-    private lazy var avatarURL: UITextField = {
+    private lazy var avatarURLTextField: UITextField = {
         appView.textField(placeholder: "Avatar URL")
     }()
     private lazy var isDoctorLabel: UILabel = {
@@ -147,33 +144,22 @@ final class RegistrationViewController: UIViewController {
     func setupUserProfileUI() {
         var lastView: UIView = contentView
         
-        // Инициализация и настройка полей ввода и других элементов
-        //phoneTextField = appView.textField(placeholder: "Phone")
         contentView.addSubview(phoneTextField)
         setupConstraintsForView(phoneTextField, below: lastView, isTopView: true)
         lastView = phoneTextField
-        
-        //usernameTextField = appView.textField(placeholder: "Username")
-        contentView.addSubview(usernameTextField)
-        setupConstraintsForView(usernameTextField, below: lastView)
-        lastView = usernameTextField
 
-        //firstNameTextField = appView.textField(placeholder: "First Name")
         contentView.addSubview(firstNameTextField)
         setupConstraintsForView(firstNameTextField, below: lastView)
         lastView = firstNameTextField
 
-        //lastNameTextField = appView.textField(placeholder: "Last Name")
         contentView.addSubview(lastNameTextField)
         setupConstraintsForView(lastNameTextField, below: lastView)
         lastView = lastNameTextField
 
-        //patronymicTextField = appView.textField(placeholder: "Patronymic")
         contentView.addSubview(patronymicTextField)
         setupConstraintsForView(patronymicTextField, below: lastView)
         lastView = patronymicTextField
         
-        //birthDay = appView.textField(placeholder: "Date of Birth")
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .wheels
@@ -188,72 +174,58 @@ final class RegistrationViewController: UIViewController {
 
         datePicker.addTarget(self, action: #selector(datePickerChanged(picker:)), for: .valueChanged)
 
-        contentView.addSubview(birthDay)  // Исправлено на добавление в contentView
+        contentView.addSubview(birthDay)
         setupConstraintsForView(birthDay, below: lastView)
         lastView = birthDay
 
-        //emailTextField = appView.textField(placeholder: "Email")
         contentView.addSubview(emailTextField)
         setupConstraintsForView(emailTextField, below: lastView)
         lastView = emailTextField
 
-        //genderTextField = appView.textField(placeholder: "Gender")
         contentView.addSubview(genderTextField)
         setupConstraintsForView(genderTextField, below: lastView)
         lastView = genderTextField
 
-        //genderLabel = appView.textField(placeholder: "Gender Label")
         contentView.addSubview(genderLabel)
         setupConstraintsForView(genderLabel, below: lastView)
         lastView = genderLabel
 
-        //countryTextField = appView.textField(placeholder: "Country")
         contentView.addSubview(countryTextField)
         setupConstraintsForView(countryTextField, below: lastView)
         lastView = countryTextField
 
-        //countryLabelTextField = appView.textField(placeholder: "Country Label")
         contentView.addSubview(countryLabelTextField)
         setupConstraintsForView(countryLabelTextField, below: lastView)
         lastView = countryLabelTextField
 
-        //cityIDTextField = appView.textField(placeholder: "City ID")
         contentView.addSubview(cityIDTextField)
         setupConstraintsForView(cityIDTextField, below: lastView)
         lastView = cityIDTextField
 
-        //cityTextField = appView.textField(placeholder: "City")
         contentView.addSubview(cityTextField)
         setupConstraintsForView(cityTextField, below: lastView)
         lastView = cityTextField
 
-        //avatar = appView.textField(placeholder: "Avatar")
-        contentView.addSubview(avatar)
-        setupConstraintsForView(avatar, below: lastView)
-        lastView = avatar
+        contentView.addSubview(avatarTextField)
+        setupConstraintsForView(avatarTextField, below: lastView)
+        lastView = avatarTextField
 
-        //avatarURL = appView.textField(placeholder: "Avatar URL")
-        contentView.addSubview(avatarURL)
-        setupConstraintsForView(avatarURL, below: lastView)
-        lastView = avatarURL
+        contentView.addSubview(avatarURLTextField)
+        setupConstraintsForView(avatarURLTextField, below: lastView)
+        lastView = avatarURLTextField
 
-        //let isDoctorLabel = UILabel()
         contentView.addSubview(isDoctorLabel)
         setupConstraintsForLabel(isDoctorLabel, beside: lastView)
         lastView = isDoctorLabel
 
-        //isDoctorSwitch = UISwitch()
         contentView.addSubview(isDoctorSwitch)
         setupConstraintsForSwitch(isDoctorSwitch, beside: isDoctorLabel)
         lastView = isDoctorSwitch
 
-        //let isConfirmedDoctorLabel = UILabel()
-        //isConfirmedDoctorLabel.text = "Is Confirmed Doctor?"
         contentView.addSubview(isConfirmedDoctorLabel)
         setupConstraintsForLabel(isConfirmedDoctorLabel, beside: lastView)
         lastView = isConfirmedDoctorLabel
 
-        //isConfirmedDoctorSwitch = UISwitch()
         contentView.addSubview(isConfirmedDoctorSwitch)
         setupConstraintsForSwitch(isConfirmedDoctorSwitch, beside: isConfirmedDoctorLabel)
         lastView = isConfirmedDoctorSwitch
@@ -262,12 +234,10 @@ final class RegistrationViewController: UIViewController {
         setupConstraintsForView(loginButton, below: lastView)
         lastView = loginButton
         
-        //newTokenTextView = appView.textView(isScrollEnabled: false)
         newTokenTextView.isHidden = true
         contentView.addSubview(newTokenTextView)
         setupConstraintsForView(newTokenTextView, below: lastView)
         
-        // Задайте дополнительные констрейнты для newTokenTextView
         newTokenTextView.snp.makeConstraints { make in
             make.height.greaterThanOrEqualTo(40)
             make.height.lessThanOrEqualTo(200)
@@ -321,47 +291,42 @@ final class RegistrationViewController: UIViewController {
     }
 
     func createUserProfile() -> UserProfile? {
-        guard let username = usernameTextField.text, !username.isEmpty,
-              let firstName = firstNameTextField.text, !firstName.isEmpty,
-              let lastName = lastNameTextField.text, !lastName.isEmpty,
-              let patronymic = patronymicTextField.text, !patronymic.isEmpty,
-              let email = emailTextField.text, !email.isEmpty,
-              let gender = genderTextField.text, !gender.isEmpty,
-              let genderLabel = genderLabel.text, !genderLabel.isEmpty,
-              let country = countryTextField.text, !country.isEmpty,
-              let countryLabel = countryLabelTextField.text, !countryLabel.isEmpty,
-              let city = cityTextField.text, !city.isEmpty,
-              let phone = phoneTextField.text, !phone.isEmpty,
-              let cityIDString = cityIDTextField.text, let cityID = Int(cityIDString),
-              let avatarURLString = avatarURL.text else {
-            print("createUserProfile nil")
-            return nil
-        }
-        
+        let firstName = firstNameTextField.text?.isEmpty ?? true ? "Шамиль" : firstNameTextField.text!
+        let lastName = lastNameTextField.text?.isEmpty ?? true ? "Агларов" : lastNameTextField.text!
+        let email = emailTextField.text?.isEmpty ?? true ? "shamil.aglarov@gmail.com" : emailTextField.text!
+        let countryLabel = countryLabelTextField.text?.isEmpty ?? true ? "Russia" : countryLabelTextField.text!
+        let phone = phoneTextField.text?.isEmpty ?? true ? "+79882088886" : phoneTextField.text!
+        let cityID = Int(cityIDTextField.text ?? "1") ?? 1
         let birthdayTimestamp = Int(birthdayDatePicker.date.timeIntervalSince1970)
-        let avatarString = avatar.text ?? ""
+        let patronymic = patronymicTextField.text?.isEmpty ?? true ? "Рамазанович" : patronymicTextField.text!
+        let gender = genderTextField.text?.isEmpty ?? true ? "male" : genderTextField.text!
+        let country = countryTextField.text?.isEmpty ?? true ? "RU" : countryTextField.text!
+        let city = cityTextField.text?.isEmpty ?? true ? "Moscow" : cityTextField.text!
+        let avatar = avatarTextField.text?.isEmpty ?? true ? "avatar" : avatarTextField.text!
+        let avatarURL = avatarURLTextField.text?.isEmpty ?? true ? "avatar.jpeg" : avatarURLTextField.text!
         let isDoctor = isDoctorSwitch.isOn
         let isConfirmedDoctor = isConfirmedDoctorSwitch.isOn
         
-        return UserProfile(
-            username: username,
+        let userProfile = UserProfile(
             first_name: firstName,
             last_name: lastName,
             patronymic: patronymic,
             birthday: birthdayTimestamp,
             email: email,
             gender: gender,
-            gender_label: genderLabel,
+            gender_label: gender,
             country: country,
             country_label: countryLabel,
             city_id: cityID,
             city: city,
             phone: phone,
-            avatar: avatarString,
-            avatar_url: avatarURLString,
+            avatar: avatar,
+            avatar_url: avatarURL,
             is_doctor: isDoctor,
             is_confirmed_doctor: isConfirmedDoctor
         )
+        print(userProfile)
+        return userProfile
     }
     
     private func bindViewModel() {
@@ -399,29 +364,27 @@ final class RegistrationViewController: UIViewController {
     }
     
     @objc private func loginTapped() {
-        guard let numberPhone = usernameTextField.text, !numberPhone.isEmpty else {
+        guard let numberPhone =  phoneTextField.text else {
             showAlert(with: "Ошибка", message: "Пожалуйста, введите номер телефона.")
             return
         }
 
         guard let profile = createUserProfile() else {
-            showAlert(with: "Ошибка", message: "Пожалуйста, заполните все поля.")
+            showAlert(with: "Ошибка", message: "Пожалуйста, заполните обязательные поля.")
             return
         }
 
         Task {
             await viewModel.requestCode(phoneNumber: numberPhone)
             await viewModel.authenticateWithCode(phoneNumber: numberPhone, code: "1111")
-            DispatchQueue.main.async {
-                if let authInUser = self.viewModel.authInUser,
-                   let numberPhone = self.usernameTextField.text {
-                    self.newTokenTextView.isHidden = false
-                    self.newTokenTextView.text = "access: \(authInUser.access)\n\nrefresh: \(authInUser.refresh)"
-                    // Сохраняем токен в буфер обмена
-                    UIPasteboard.general.string = "access: \(authInUser.access)\n\nrefresh: \(authInUser.refresh)"
-                    // Отправляем токен и номер телефона в другой контроллер
-                    self.coordinator?.onSendToken?(authInUser.access, numberPhone)
-                } else if let error = self.viewModel.loginError {
+
+            if let authInUser = self.viewModel.authInUser {
+                // Обновляем UI
+                updateUIWithTokenInfo(access: authInUser.access, refresh: authInUser.refresh, numberPhone: numberPhone)
+
+                await viewModel.perform(userData: profile, fromToken: authInUser.access)
+            } else if let error = self.viewModel.loginError {
+                DispatchQueue.main.async {
                     self.showAlert(with: "Ошибка", message: error)
                 }
             }
