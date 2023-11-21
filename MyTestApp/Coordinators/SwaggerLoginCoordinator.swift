@@ -43,10 +43,10 @@ final class SwaggerLoginCoordinator: Coordinator {
     }
     
     func didFinishLogin() {
-        let newsCoordinator = NewsCoordinator(navigationController: navigationController)
-        childCoordinators.append(newsCoordinator)
+        let homeCoordinator = SwaggerHomeCoordinator(navigationController: navigationController)
+        childCoordinators.append(homeCoordinator)
         // Здесь мы передаем полученный userProfile как параметр
-        newsCoordinator.start(user: userProfile)
+        homeCoordinator.start(user: userProfile)
         resetState()
     }
     

@@ -36,7 +36,7 @@ final class RegistrationCoordinator: Coordinator {
     }
     
     func didFinishLogin() {
-        let homeCoordinator = HomeCoordinator(navigationController: navigationController)
+        let homeCoordinator = SwaggerHomeCoordinator(navigationController: navigationController)
         childCoordinators.append(homeCoordinator)
         // Здесь мы передаем полученный userProfile как параметр
         homeCoordinator.start(user: userProfile)
