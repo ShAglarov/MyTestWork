@@ -94,7 +94,9 @@ final class NetworkSwagger {
     }
     
     private func buildURLComponents(from baseURL: String) -> URLComponents? {
-        guard let base = URL(string: baseURL), let baseScheme = base.scheme, let baseHost = base.host else {
+        guard let base = URL(string: baseURL),
+              let baseScheme = base.scheme,
+              let baseHost = base.host else {
             print("Invalid base URL")
             return nil
         }
