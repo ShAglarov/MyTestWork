@@ -11,19 +11,21 @@ final class NewsViewModel {
     
     @Published var news: [OneNews] = []
     @Published var isLoading: Bool = false
+    @Published var newsError: String? = nil
     
     private let provider = NetworkManager()
     
-    func fetchNews(searchQuery: String) {
+    func performGetNews(searchNews: String) async {
         isLoading = true
-        provider.getNews(value: searchQuery, limit: "20", completion: { [weak self] result in
-            self?.isLoading = false
-            switch result {
-            case .failure(let error):
-                print("Ошибка \(error.localizedDescription)")
-            case .success(let articles):
-                self?.news = articles
+        do {
+            let fetchedNews = try await provider.getNews(searchQuery: searchNews)
+            await MainActor.run { [weak self] in
+                self?.news = fetchedNews.articles
+                self?.isLoading = false
             }
-        })
+        } catch {
+            newsError = "Ошибка: \(error.localizedDescription)"
+            self.isLoading = false
+        }
     }
 }

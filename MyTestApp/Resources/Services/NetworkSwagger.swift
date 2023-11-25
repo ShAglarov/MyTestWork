@@ -94,7 +94,9 @@ final class NetworkSwagger {
     }
     
     private func buildURLComponents(from baseURL: String) -> URLComponents? {
-        guard let base = URL(string: baseURL), let baseScheme = base.scheme, let baseHost = base.host else {
+        guard let base = URL(string: baseURL),
+              let baseScheme = base.scheme,
+              let baseHost = base.host else {
             print("Invalid base URL")
             return nil
         }
@@ -160,6 +162,7 @@ final class NetworkSwagger {
         }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
