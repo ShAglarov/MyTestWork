@@ -152,6 +152,7 @@ final class LoginSwaggerViewController: UIViewController {
         guard let token = passwordTextField.text else { return }
         // Запускаем асинхронную задачу для входа в систему
         Task {
+            //await viewModel.perform(from: token)
             await viewModel.perform(from: token)
         }
     }
