@@ -19,11 +19,10 @@ final class LoginSwaggerViewModel {
     private let provider = NetworkSwagger()
     
     // Добавляем метод для аутентификации пользователя
-    func performLogin() async {
+    func perform(from token: String) async {
         isLoading = true
         do {
             // Здесь должен быть токен, который вы получили после аутентификации
-            let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NDA2MTAzLCJpYXQiOjE2OTkzOTczNzIsImp0aSI6IjFiYjZlN2FmYjNkNTQwZjhhOGExMjFjZDQxZjMzNzI4IiwidXNlcl9pZCI6IjEyYjkwZTU3LTEyZTgtNGRjYy05ODNhLTVkMDNhOWI3YzlkNiJ9.UK_FmAHbX5iOWp8WSGZQTTPxrlJy6jKy1YP7BN29vLg"
             let profile = try await provider.getUserProfile(token: token)
             DispatchQueue.main.async { [weak self] in
                 self?.loggedInUser = profile

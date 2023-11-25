@@ -10,6 +10,9 @@
 		4B1182DE2AFB004A0007A707 /* SwaggerHomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1182DD2AFB004A0007A707 /* SwaggerHomeCoordinator.swift */; };
 		4B1182E12AFB011C0007A707 /* HomeSwaggerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1182E02AFB011C0007A707 /* HomeSwaggerViewController.swift */; };
 		4B1182E32AFB01360007A707 /* HomeSwaggerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1182E22AFB01360007A707 /* HomeSwaggerViewModel.swift */; };
+		4B1182E62AFBB6210007A707 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1182E52AFBB6210007A707 /* RegistrationViewController.swift */; };
+		4B1182E82AFBB6370007A707 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1182E72AFBB6370007A707 /* RegistrationViewModel.swift */; };
+		4B1182EA2AFBB76C0007A707 /* RegistrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1182E92AFBB76C0007A707 /* RegistrationCoordinator.swift */; };
 		4B3118472AF49AB400D4927A /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3118462AF49AB400D4927A /* NewsViewController.swift */; };
 		4B3118492AF49AF100D4927A /* NewsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3118482AF49AF100D4927A /* NewsCoordinator.swift */; };
 		4B31184B2AF49B2C00D4927A /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B31184A2AF49B2C00D4927A /* NewsViewModel.swift */; };
@@ -58,6 +61,9 @@
 		4B1182DD2AFB004A0007A707 /* SwaggerHomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwaggerHomeCoordinator.swift; sourceTree = "<group>"; };
 		4B1182E02AFB011C0007A707 /* HomeSwaggerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSwaggerViewController.swift; sourceTree = "<group>"; };
 		4B1182E22AFB01360007A707 /* HomeSwaggerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSwaggerViewModel.swift; sourceTree = "<group>"; };
+		4B1182E52AFBB6210007A707 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		4B1182E72AFBB6370007A707 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		4B1182E92AFBB76C0007A707 /* RegistrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinator.swift; sourceTree = "<group>"; };
 		4B3118462AF49AB400D4927A /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		4B3118482AF49AF100D4927A /* NewsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCoordinator.swift; sourceTree = "<group>"; };
 		4B31184A2AF49B2C00D4927A /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
@@ -122,6 +128,15 @@
 				4B1182E22AFB01360007A707 /* HomeSwaggerViewModel.swift */,
 			);
 			path = SwaggerHome;
+			sourceTree = "<group>";
+		};
+		4B1182E42AFBB5D10007A707 /* RegistrationSMS */ = {
+			isa = PBXGroup;
+			children = (
+				4B1182E52AFBB6210007A707 /* RegistrationViewController.swift */,
+				4B1182E72AFBB6370007A707 /* RegistrationViewModel.swift */,
+			);
+			path = RegistrationSMS;
 			sourceTree = "<group>";
 		};
 		4B3118452AF49A5600D4927A /* News */ = {
@@ -226,8 +241,9 @@
 		4BA88DDD2AEC942C007B7160 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				4BA88DED2AED078E007B7160 /* Logging */,
+				4B1182E42AFBB5D10007A707 /* RegistrationSMS */,
 				4B59896E2AF9676400CBB957 /* SwaggerLogging */,
+				4BA88DED2AED078E007B7160 /* Logging */,
 				4BA88DF02AED0ED0007B7160 /* Home */,
 				4B1182DF2AFB00F00007A707 /* SwaggerHome */,
 				4B3118452AF49A5600D4927A /* News */,
@@ -238,9 +254,10 @@
 		4BA88DDE2AEC9901007B7160 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				4BA88DDF2AEC9965007B7160 /* LoginCoordinator.swift */,
 				4B59897A2AF994CB00CBB957 /* SwaggerLoginCoordinator.swift */,
 				4B1182DD2AFB004A0007A707 /* SwaggerHomeCoordinator.swift */,
+				4B1182E92AFBB76C0007A707 /* RegistrationCoordinator.swift */,
+				4BA88DDF2AEC9965007B7160 /* LoginCoordinator.swift */,
 				4BA88DE72AECA21A007B7160 /* HomeCoordinator.swift */,
 				4B3118482AF49AF100D4927A /* NewsCoordinator.swift */,
 				4BA88DE12AEC99AB007B7160 /* Coordinator.swift */,
@@ -406,12 +423,15 @@
 				4B5989742AF96A7A00CBB957 /* NetworkSwagger.swift in Sources */,
 				4BA88DE02AEC9965007B7160 /* LoginCoordinator.swift in Sources */,
 				4B3118472AF49AB400D4927A /* NewsViewController.swift in Sources */,
+				4B1182E82AFBB6370007A707 /* RegistrationViewModel.swift in Sources */,
 				4BA88DD42AEC8C47007B7160 /* Post.swift in Sources */,
 				4B1182DE2AFB004A0007A707 /* SwaggerHomeCoordinator.swift in Sources */,
 				4BA88DE22AEC99AB007B7160 /* Coordinator.swift in Sources */,
 				4B5989772AF96D2C00CBB957 /* HError.swift in Sources */,
 				4BA88DF92AEDB495007B7160 /* AppView.swift in Sources */,
+				4B1182E62AFBB6210007A707 /* RegistrationViewController.swift in Sources */,
 				4BA88DEA2AECA438007B7160 /* HomeViewController.swift in Sources */,
+				4B1182EA2AFBB76C0007A707 /* RegistrationCoordinator.swift in Sources */,
 				4BA88DEF2AED0C45007B7160 /* HomeViewModel.swift in Sources */,
 				4BA88DE62AECA10E007B7160 /* UserDetailCell.swift in Sources */,
 				4B3118492AF49AF100D4927A /* NewsCoordinator.swift in Sources */,

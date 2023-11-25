@@ -30,17 +30,30 @@ final class LoginSwaggerViewController: UIViewController {
     let appView = AppView()
 
     lazy var usernameTextField: UITextField = {
-        appView.textField(placeholder: "Логин")
+        appView.textField(placeholder: "Номер телефона")
     }()
     
     lazy var passwordTextField: UITextField = {
-        appView.textField(placeholder: "Пароль", isSecureTextEntry: true)
+        appView.textField(placeholder: "Пароль", isSecureTextEntry: false)
     }()
     
-    private lazy var loginButton: UIButton = {
+    private lazy var loginBtn: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Login", for: .normal)
+        button.setTitle("Войти", for: .normal)
         button.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+        button.backgroundColor = .systemBlue
+        button.tintColor = .white
+        button.setTitleShadowColor(.black, for: .normal)
+        return button
+    }()
+    
+    private lazy var registrationBtn: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Пройти регистрацию", for: .normal)
+        button.addTarget(self, action: #selector(registrationTapped), for: .touchUpInside)
+        button.backgroundColor = .systemBlue
+        button.tintColor = .white
+        button.setTitleShadowColor(.black, for: .normal)
         return button
     }()
     
@@ -69,7 +82,8 @@ final class LoginSwaggerViewController: UIViewController {
     private func setupUI() {
         view.addSubview(usernameTextField)
         view.addSubview(passwordTextField)
-        view.addSubview(loginButton)
+        view.addSubview(loginBtn)
+        view.addSubview(registrationBtn)
         
         usernameTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
@@ -84,11 +98,16 @@ final class LoginSwaggerViewController: UIViewController {
             make.height.equalTo(40)
         }
         
-        loginButton.snp.makeConstraints { make in
+        loginBtn.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(40)
-            make.centerX.equalTo(view)
-            make.height.equalTo(50)
-            make.width.equalTo(200)
+            make.leading.trailing.equalToSuperview().inset(40)
+            make.height.equalTo(40)
+        }
+        
+        registrationBtn.snp.makeConstraints { make in
+            make.top.equalTo(loginBtn.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(40)
+            make.height.equalTo(40)
         }
         
         usernameTextField.text = "+7"
@@ -130,12 +149,16 @@ final class LoginSwaggerViewController: UIViewController {
     }
     
     @objc private func loginTapped() {
-        viewModel.userName = usernameTextField.text ?? ""
-        viewModel.password = passwordTextField.text ?? ""
+        guard let token = passwordTextField.text else { return }
         // Запускаем асинхронную задачу для входа в систему
         Task {
-            await viewModel.performLogin()
+            //await viewModel.perform(from: token)
+            await viewModel.perform(from: token)
         }
+    }
+    
+    @objc private func registrationTapped() {
+        coordinator?.navigateToRegistration()
     }
     
     private func showAlert(with title: String, message: String, completion: (() -> Void)? = nil) {
@@ -144,5 +167,9 @@ final class LoginSwaggerViewController: UIViewController {
             completion?()
         })
         present(alert, animated: true)
+    }
+    
+    func updateWithToken(_ token: String?) {
+        self.passwordTextField.text = token
     }
 }

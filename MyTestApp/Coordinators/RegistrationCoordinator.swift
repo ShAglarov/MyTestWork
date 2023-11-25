@@ -1,38 +1,31 @@
 //
-//  SwaggerLoginCoordinator.swift
+//  RegistrationCoordinator.swift
 //  MyTestApp
 //
-//  Created by Shamil Aglarov on 07.11.2023.
+//  Created by Shamil Aglarov on 08.11.2023.
 //
-
 import UIKit
 import Combine
 
-final class SwaggerLoginCoordinator: Coordinator {
+final class RegistrationCoordinator: Coordinator {
     
     var userProfile: UserProfile?
     
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
+    var onSendToken: ((String, String) -> Void)?
     private var cancellables: Set<AnyCancellable> = []
-    var onTokenReceived: ((String, String) -> Void)?
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     func start<USER: Codable>(user: USER? = nil) {
-        let viewModel = LoginSwaggerViewModel()
+        let viewModel = RegistrationViewModel()
         
-        let loginVC = LoginSwaggerViewController(viewModel: viewModel)
-        loginVC.coordinator = self
-        
-        self.onTokenReceived = { [weak loginVC] access, numberPhone in
-            loginVC?.updateWithToken(access)
-            loginVC?.usernameTextField.text = numberPhone
-        }
-        
-        navigationController.pushViewController(loginVC, animated: true)
+        let regVC = RegistrationViewController(viewModel: viewModel)
+        regVC.coordinator = self
+        navigationController.pushViewController(regVC, animated: true)
         
         viewModel.$loggedInUser.sink { [weak self] (user: UserProfile?) in
             if let user = user {
@@ -48,15 +41,6 @@ final class SwaggerLoginCoordinator: Coordinator {
         // Здесь мы передаем полученный userProfile как параметр
         homeCoordinator.start(user: userProfile)
         resetState()
-    }
-    
-    func navigateToRegistration() {
-        let registrationCoordinator = RegistrationCoordinator(navigationController: navigationController)
-        registrationCoordinator.onSendToken = { [weak self] access, numberPhone in
-            self?.onTokenReceived?(access, numberPhone)
-        }
-        childCoordinators.append(registrationCoordinator)
-        registrationCoordinator.start(user: nil as User?)
     }
     
     // Метод для сброса состояния координатора
