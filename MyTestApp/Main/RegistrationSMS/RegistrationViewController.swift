@@ -12,6 +12,7 @@ import Combine
 final class RegistrationViewController: UIViewController {
     
     private var viewModel = RegistrationViewModel()
+    var sharedToken = StorageToken.shared
     
     init(viewModel: RegistrationViewModel) {
         self.viewModel = viewModel
@@ -395,7 +396,7 @@ final class RegistrationViewController: UIViewController {
             if let authInUser = self.viewModel.authInUser {
                 // Обновляем UI
                 updateUIWithTokenInfo(access: authInUser.access, refresh: authInUser.refresh, numberPhone: numberPhone)
-                
+                sharedToken.save(authUser: authInUser)
                 await viewModel.perform(userData: profile, fromToken: authInUser.access)
             } else if let error = self.viewModel.loginError {
                 DispatchQueue.main.async {
