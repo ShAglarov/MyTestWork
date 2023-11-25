@@ -13,6 +13,9 @@
 		4B1182E62AFBB6210007A707 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1182E52AFBB6210007A707 /* RegistrationViewController.swift */; };
 		4B1182E82AFBB6370007A707 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1182E72AFBB6370007A707 /* RegistrationViewModel.swift */; };
 		4B1182EA2AFBB76C0007A707 /* RegistrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1182E92AFBB76C0007A707 /* RegistrationCoordinator.swift */; };
+		4B29CDBA2B0F997900BB0903 /* StorageTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29CDB92B0F997900BB0903 /* StorageTokens.swift */; };
+		4B29CDBC2B113ED500BB0903 /* NetworkSinglton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29CDBB2B113ED500BB0903 /* NetworkSinglton.swift */; };
+		4B29CDBE2B120F1000BB0903 /* CurrentDateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29CDBD2B120F1000BB0903 /* CurrentDateInfo.swift */; };
 		4B3118472AF49AB400D4927A /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3118462AF49AB400D4927A /* NewsViewController.swift */; };
 		4B3118492AF49AF100D4927A /* NewsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3118482AF49AF100D4927A /* NewsCoordinator.swift */; };
 		4B31184B2AF49B2C00D4927A /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B31184A2AF49B2C00D4927A /* NewsViewModel.swift */; };
@@ -64,6 +67,9 @@
 		4B1182E52AFBB6210007A707 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		4B1182E72AFBB6370007A707 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		4B1182E92AFBB76C0007A707 /* RegistrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinator.swift; sourceTree = "<group>"; };
+		4B29CDB92B0F997900BB0903 /* StorageTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageTokens.swift; sourceTree = "<group>"; };
+		4B29CDBB2B113ED500BB0903 /* NetworkSinglton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSinglton.swift; sourceTree = "<group>"; };
+		4B29CDBD2B120F1000BB0903 /* CurrentDateInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateInfo.swift; sourceTree = "<group>"; };
 		4B3118462AF49AB400D4927A /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
 		4B3118482AF49AF100D4927A /* NewsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCoordinator.swift; sourceTree = "<group>"; };
 		4B31184A2AF49B2C00D4927A /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
@@ -139,6 +145,14 @@
 			path = RegistrationSMS;
 			sourceTree = "<group>";
 		};
+		4B29CDB82B0F98D700BB0903 /* FileManager */ = {
+			isa = PBXGroup;
+			children = (
+				4B29CDB92B0F997900BB0903 /* StorageTokens.swift */,
+			);
+			path = FileManager;
+			sourceTree = "<group>";
+		};
 		4B3118452AF49A5600D4927A /* News */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +214,7 @@
 		4BA88DD72AEC8F05007B7160 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4B29CDB82B0F98D700BB0903 /* FileManager */,
 				4BA88DD92AEC8F42007B7160 /* Network */,
 				4BA88DD82AEC8F2D007B7160 /* Models */,
 				4B5989752AF96CD300CBB957 /* HErrors */,
@@ -216,6 +231,7 @@
 				4BA88DD52AEC8D7C007B7160 /* Photo.swift */,
 				4BA88DFC2AEE6D83007B7160 /* CombinedUser.swift */,
 				4B31184C2AF5131700D4927A /* Response.swift */,
+				4B29CDBD2B120F1000BB0903 /* CurrentDateInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -226,6 +242,7 @@
 				4BA88DDA2AEC905A007B7160 /* JSONPlaceholderManager.swift */,
 				4BC625B62AF42FB4003E3D64 /* NetworkManager.swift */,
 				4B5989732AF96A7A00CBB957 /* NetworkSwagger.swift */,
+				4B29CDBB2B113ED500BB0903 /* NetworkSinglton.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -406,10 +423,12 @@
 				4B59897B2AF994CB00CBB957 /* SwaggerLoginCoordinator.swift in Sources */,
 				4B31184D2AF5131700D4927A /* Response.swift in Sources */,
 				4BA88DFD2AEE6D83007B7160 /* CombinedUser.swift in Sources */,
+				4B29CDBC2B113ED500BB0903 /* NetworkSinglton.swift in Sources */,
 				4BA88DB02AEC8A26007B7160 /* AppDelegate.swift in Sources */,
 				4B31184B2AF49B2C00D4927A /* NewsViewModel.swift in Sources */,
 				4BA88DF72AED1A7D007B7160 /* PostCell.swift in Sources */,
 				4BA88DFB2AEE6BC2007B7160 /* PhotoCell.swift in Sources */,
+				4B29CDBE2B120F1000BB0903 /* CurrentDateInfo.swift in Sources */,
 				4B1182E12AFB011C0007A707 /* HomeSwaggerViewController.swift in Sources */,
 				4BA88DE82AECA21A007B7160 /* HomeCoordinator.swift in Sources */,
 				4BA88DEC2AECC308007B7160 /* LoginViewModel.swift in Sources */,
@@ -434,6 +453,7 @@
 				4B1182EA2AFBB76C0007A707 /* RegistrationCoordinator.swift in Sources */,
 				4BA88DEF2AED0C45007B7160 /* HomeViewModel.swift in Sources */,
 				4BA88DE62AECA10E007B7160 /* UserDetailCell.swift in Sources */,
+				4B29CDBA2B0F997900BB0903 /* StorageTokens.swift in Sources */,
 				4B3118492AF49AF100D4927A /* NewsCoordinator.swift in Sources */,
 				4B5989702AF967B900CBB957 /* LoginSwaggerViewModel.swift in Sources */,
 			);
