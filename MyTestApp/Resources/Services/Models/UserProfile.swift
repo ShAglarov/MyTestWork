@@ -6,19 +6,17 @@
 //
 
 struct UserProfile: Codable {
-    
-    let uid: String
-    let username: String
+    //let username: String
     let first_name: String
     let last_name: String
     let patronymic: String?
-    let birthday: String?
+    let birthday: Int?
     let email: String
     let gender: String?
     let gender_label: String?
     let country: String
     let country_label: String
-    let city_id: String?
+    let city_id: Int?
     let city: String?
     let phone: String
     let avatar: String?
