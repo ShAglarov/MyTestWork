@@ -27,56 +27,75 @@ final class HomeSwaggerViewController: UIViewController {
     let scrollView = UIScrollView()
     let contentView = UIView()
     var profileUser: UserProfile?
-
+    
+    lazy var nickNameLabel: UILabel = {
+        let nickName = profileUser?.nickname ?? "-"
+        return appView.textLabel(text: "Nick Name: \(nickName)")
+    }()
     lazy var firstNameLabel: UILabel = {
-        appView.textLabel(text: "First Name: \(profileUser)")
+        let firstName = profileUser?.first_name ?? "-"
+        return appView.textLabel(text: "First Name: \(firstName)")
     }()
     lazy var lastNameLabel: UILabel = {
-        appView.textLabel(text: "Last Name")
+        let lastName = profileUser?.last_name ?? "-"
+        return appView.textLabel(text: "Last Name: \(lastName)")
     }()
      lazy var patronymicLabel: UILabel = {
-        appView.textLabel(text: "Patronymic")
+         let patronymic = profileUser?.patronymic ?? "-"
+         return appView.textLabel(text: "Patronymic: \(patronymic)")
     }()
      lazy var birthDay: UILabel = {
-        appView.textLabel(text: "Date of Birth")
+         let birthday = profileUser?.birthday ?? 0
+         return appView.textLabel(text: "Date of Birth: \(birthday)")
     }()
      lazy var emailLabel: UILabel = {
-        appView.textLabel(text: "Email")
+         let email = profileUser?.email ?? "-"
+         return appView.textLabel(text: "Email: \(email)")
     }()
      lazy var genderLabel: UILabel = {
-        appView.textLabel(text: "Gender")
+         let gender = profileUser?.gender ?? "-"
+         return appView.textLabel(text: "Gender: \(gender)")
     }()
 
      lazy var countryLabel: UILabel = {
-        appView.textLabel(text: "Country")
+         let country = profileUser?.country ?? "-"
+         return appView.textLabel(text: "Country: \(country)")
     }()
      lazy var countryLabelTwo: UILabel = {
-        appView.textLabel(text: "Country Label")
+         let country = profileUser?.country ?? "-"
+         return appView.textLabel(text: "Country Label: \(country)")
     }()
      lazy var cityIDLabel: UILabel = {
-        appView.textLabel(text: "City ID")
+         let city = profileUser?.city ?? "-"
+         return appView.textLabel(text: "City ID: \(city)")
     }()
      lazy var cityLabel: UILabel = {
-        appView.textLabel(text: "City")
+         let city = profileUser?.city ?? "-"
+         return appView.textLabel(text: "City: \(city)")
     }()
      lazy var phoneLabel: UILabel = {
-        appView.textLabel(text: "Phone")
+         let phone = profileUser?.phone ?? "-"
+         return appView.textLabel(text: "Phone: \(phone)")
     }()
      lazy var avatarLabel: UILabel = {
-        appView.textLabel(text: "Avatar")
+         let avatar = profileUser?.avatar ?? "-"
+         return appView.textLabel(text: "Avatar: \(avatar)")
     }()
      lazy var avatarURLLabel: UILabel = {
-        appView.textLabel(text: "Avatar URL")
+         let avatar = profileUser?.avatar ?? "-"
+         return appView.textLabel(text: "Avatar URL: \(avatar)")
     }()
      lazy var isDoctorLabel: UILabel = {
-        appView.textLabel(text: "Is Doctor?")
+         let isDoctor = profileUser?.is_doctor ?? false
+         return appView.textLabel(text: "Is Doctor?: \(isDoctor)")
     }()
      lazy var isDoctorSwitch: UISwitch = {
         var isDoctor = UISwitch()
         return isDoctor
     }()
      lazy var isConfirmedDoctorLabel: UILabel = {
-        appView.textLabel(text: "Is Confirmed Doctor?")
+         let isConfirmedDoctor = profileUser?.is_confirmed_doctor ?? false
+         return appView.textLabel(text: "Is Confirmed Doctor?: \(isConfirmedDoctor)")
     }()
      lazy var isConfirmedDoctorSwitch: UISwitch = {
         var isConfirmedDoctor = UISwitch()
@@ -128,6 +147,10 @@ final class HomeSwaggerViewController: UIViewController {
         contentView.addSubview(phoneLabel)
         setupConstraintsForView(phoneLabel, below: lastView, isTopView: true)
         lastView = phoneLabel
+        
+        contentView.addSubview(nickNameLabel)
+        setupConstraintsForView(nickNameLabel, below: lastView)
+        lastView = nickNameLabel
 
         contentView.addSubview(firstNameLabel)
         setupConstraintsForView(firstNameLabel, below: lastView)

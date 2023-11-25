@@ -45,13 +45,6 @@ class NewsViewController: UIViewController {
         
         bindViewModel()
     }
-    
-//    @objc func textFieldDidChange(_ textField: UITextField) {
-//        // Запускаем поиск, когда текст изменяется.
-//        if let searchText = textField.text, !searchText.isEmpty {
-//            viewModel.fetchNews(searchQuery: searchText)
-//        }
-//    }
 
     private func setupUI() {
         
@@ -108,7 +101,9 @@ extension NewsViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Запускаем поиск, когда пользователь нажимает кнопку "return" на клавиатуре.
         if let searchText = textField.text, !searchText.isEmpty {
-            viewModel.fetchNews(searchQuery: searchText)
+            Task {
+                await viewModel.performGetNews(searchNews: searchText)
+            }
         }
         textField.resignFirstResponder() // Скрываем клавиатуру
         return true

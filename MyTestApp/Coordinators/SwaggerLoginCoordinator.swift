@@ -17,12 +17,66 @@ final class SwaggerLoginCoordinator: Coordinator {
     private var cancellables: Set<AnyCancellable> = []
     var onTokenReceived: ((String, String) -> Void)?
     
+    var sharedNetwork = NetworkSinglton.shared
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
     func start<USER: Codable>(user: USER? = nil) {
         let viewModel = LoginSwaggerViewModel()
+        let sharedUserAuth = StorageToken.shared
+        
+        if let token = sharedUserAuth.load() {
+            print("access: \(token.access)\n refresh: \(token.refresh)")
+            
+            guard let expirationDateInMoscow = sharedUserAuth
+                .getExpirationDateInMoscowTime(decodeJWT: sharedUserAuth.exampleJWTDecoder,
+                                               token: token.access
+                )
+            else {
+                print("Не удалось извлечь дату истечения срока действия токена.")
+                return
+            }
+            print("ДАТА ОКОНЧАНИЯ ТОКЕНА - \(expirationDateInMoscow)")
+            
+            let dateInfo = CurrentDateInfo()
+            
+            Task {
+                do {
+                    guard let currentDateInfo = try await sharedNetwork.getMoscowTime() else {
+                        print("Не удалось получить информацию о текущем времени")
+                        return
+                    }
+
+                    guard let moscowDate = currentDateInfo.parsedDate() else {
+                        print("Не удалось преобразовать строку в дату")
+                        return
+                    }
+
+                    print("Текущая дата - \(moscowDate)")
+
+                    if moscowDate > expirationDateInMoscow {
+                        do {
+                            let newToken = try await self.sharedNetwork.getToken(refresh: token.refresh)
+                               let refreshToken = newToken["refresh"] as! String
+                               let accessToken = newToken["access"] as! String
+                            let newAuthResponce = AuthResponse(refresh: refreshToken, access: accessToken)
+                            DispatchQueue.main.async { // Обновление UI на главном потоке
+                                sharedUserAuth.save(authUser: newAuthResponce)
+                                print("Срок действия токена истек, вы получили новый токен, попробуйте войти снова")
+                            }
+                        } catch {
+                            DispatchQueue.main.async {
+                                print("Ошибка при получении нового токена: \(error.localizedDescription)")
+                            }
+                        }
+                    }
+                } catch {
+                    print("Ошибка при получении текущего времени: \(error.localizedDescription)")
+                }
+            }
+        }
         
         let loginVC = LoginSwaggerViewController(viewModel: viewModel)
         loginVC.coordinator = self
