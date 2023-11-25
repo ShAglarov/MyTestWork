@@ -45,7 +45,7 @@ class NetworkSinglton {
         let urlComponents = buildURLComponents(from: baseURL)
         return urlComponents?.url
     }
-    
+
     private func postRequestGetRefresh(json: [String: Any]) async throws -> [String: Any] {
         guard let url = createURL(from: getRefreshToken) else {
             throw HError.invalidURL
@@ -80,7 +80,7 @@ class NetworkSinglton {
         let requestBody: [String: Any] = ["refresh": refresh]
         return try await postRequestGetRefresh(json: requestBody)
     }
-    
+
     func getMoscowTime() async throws -> CurrentDateInfo? {
         let urlString = "https://worldtimeapi.org/api/timezone/Europe/Moscow"
         guard let url = URL(string: urlString) else {
