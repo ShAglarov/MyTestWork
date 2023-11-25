@@ -116,7 +116,7 @@ final class LoginSwaggerViewController: UIViewController {
     
     private func bindViewModel() {
         viewModel.$isLoading
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoading in
                 if isLoading {
                     self?.showLoading()
@@ -127,7 +127,7 @@ final class LoginSwaggerViewController: UIViewController {
             .store(in: &cancellables)
 
         viewModel.$loginError
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] error in
                 if let error = error {
                     self?.showAlert(with: "Error", message: error)
@@ -137,7 +137,7 @@ final class LoginSwaggerViewController: UIViewController {
             .store(in: &cancellables)
 
         viewModel.$isLoggedIn
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoggedIn in
                 if isLoggedIn {
                     if let user = self?.viewModel.loggedInUser {

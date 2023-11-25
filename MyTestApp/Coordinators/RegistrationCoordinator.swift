@@ -30,7 +30,7 @@ final class RegistrationCoordinator: Coordinator {
         viewModel.$loggedInUser.sink { [weak self] (user: UserProfile?) in
             if let user = user {
                 self?.userProfile = user
-                self?.didFinishLogin()
+               // self?.didFinishLogin()
             }
         }.store(in: &cancellables)
     }

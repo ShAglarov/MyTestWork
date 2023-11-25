@@ -21,6 +21,8 @@ final class SwaggerHomeCoordinator: Coordinator {
         let homeVC = HomeSwaggerViewController(viewModel: viewModel)
         if let user = user as? UserProfile {
             homeVC.title = "Добро пожаловать \(user.first_name)"
+            homeVC.nickNameLabel.text = "Логин \(user.nickname)"
+            homeVC.firstNameLabel.text = "Имя: \(user.first_name)"
             homeVC.lastNameLabel.text = "Фамилия: \(user.last_name)"
             homeVC.patronymicLabel.text = "Отчество: \(user.patronymic ?? "")"
             homeVC.birthDay.text = "Дата рождения: \(user.birthday ?? 1)"

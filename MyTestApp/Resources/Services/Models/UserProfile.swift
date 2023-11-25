@@ -6,7 +6,7 @@
 //
 
 struct UserProfile: Codable {
-    //let username: String
+    let nickname: String
     let first_name: String
     let last_name: String
     let patronymic: String?
