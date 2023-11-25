@@ -153,7 +153,7 @@ final class LoginSwaggerViewController: UIViewController {
         // Запускаем асинхронную задачу для входа в систему
         Task {
             //await viewModel.perform(from: token)
-            await viewModel.perform2(from: token)
+            await viewModel.perform(from: token)
         }
     }
     
