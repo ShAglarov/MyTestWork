@@ -80,7 +80,6 @@ class NetworkSinglton {
         let requestBody: [String: Any] = ["refresh": refresh]
         return try await postRequestGetRefresh(json: requestBody)
     }
-
     func getMoscowTime() async throws -> CurrentDateInfo? {
         let urlString = "https://worldtimeapi.org/api/timezone/Europe/Moscow"
         guard let url = URL(string: urlString) else {
