@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
 
     private var viewModel = HomeViewModel()
     private let appView = AppView()

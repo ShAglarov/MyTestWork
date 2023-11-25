@@ -16,10 +16,14 @@ final class NewsCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start(user: User?) {
+    func start<USER>(user: USER? = nil) {
         let viewModel = NewsViewModel()
         let newsVC = NewsViewController(viewModel: viewModel)
-        newsVC.title = user?.name ?? ""
+        if let user = user as? User {
+            newsVC.title = user.name
+        } else {
+            newsVC.title = ""
+        }
         navigationController.pushViewController(newsVC, animated: true)
     }
 }
